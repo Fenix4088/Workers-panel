@@ -1,42 +1,21 @@
 import React from "react";
-import styled, { keyframes } from "styled-components/macro";
+import {Circles, useLoading} from '@agney/react-loading';
+import styled from "styled-components/macro";
 
-export const Loader = () => {
+export function Loader() {
+    const {containerProps, indicatorEl} = useLoading({
+        loading: true,
+        indicator: <Circles />,
+    });
+
     return (
-        <LoaderContainer>
-            <Card/>
-        </LoaderContainer>
+        <LoaderWrapper {...containerProps}>
+            {indicatorEl} {/* renders only while loading */}
+        </LoaderWrapper>
     );
-};
+}
 
-// Styles
-const animate = keyframes`
-  50% {
-    transform: rotateY(0);
-  }
-  100% {
-    transform: rotateY(180deg);
-  }
-`;
-
-const LoaderContainer = styled.div`
-  perspective: 300px;
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;
-
-const Card = styled.div`
-  margin: auto;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100px;
-  height: 150px;
-  border-radius: 10px;
-  background: ${({theme}) => theme.color.primary.main};
-  animation: ${animate} 1.5s infinite;
-  box-shadow: ${({theme}) => theme.shadow["2"]};
+const LoaderWrapper = styled.section`
+    width: 50px;
+    color: ${({theme}) => theme.color.primary.main};
 `;

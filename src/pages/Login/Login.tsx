@@ -1,12 +1,14 @@
 import React from "react";
-import { InputText } from "../../components/common/InputText/InputText";
-import { NavLink, Redirect } from "react-router-dom";
-import { Button } from "../../components/common/Button/Button";
-import { Checkbox } from "../../components/common/Checkbox/Checkbox";
+import {InputText} from "../../components/common/InputText/InputText";
+import {NavLink, Redirect} from "react-router-dom";
+import {Button} from "../../components/common/Button/Button";
+import {Checkbox} from "../../components/common/Checkbox/Checkbox";
 import styled from "styled-components/macro";
-import { useFormik } from "formik";
-import {useDispatch} from "react-redux";
-import {routes} from "../../routes/routes";
+import {useFormik} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {routes} from "../../App/routes/routes";
+import {loginSA} from "./loginReducer";
+import {RootStateT} from "../../App/store/store";
 
 export type LoginFormT = {
     email: string;
@@ -16,6 +18,7 @@ export type LoginFormT = {
 
 export const Login = () => {
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector<RootStateT, boolean>(state => state.login.isLoggedIn);
 
     const validate = (values: LoginFormT) => {
         const errors: LoginFormT = {} as LoginFormT;
@@ -38,13 +41,13 @@ export const Login = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: "" || "yehorTest@gmail.com",
-            password: "" || "yehorTest@gmail.com",
+            email: "" || "yehor@gmail.com",
+            password: "" || "yehor123",
             rememberMe: false
         },
         validate,
         onSubmit: (values) => {
-            console.log(values)
+            dispatch(loginSA(values))
         }
     });
 
@@ -52,9 +55,9 @@ export const Login = () => {
         return formik.touched[fieldType] && formik.errors[fieldType] ? `${formik.errors[fieldType]}` : "";
     };
 
-    // if (isLoggedIn) {
-    //     return <Redirect to={routes.profile} />;
-    // }
+    if (isLoggedIn) {
+        return <Redirect to={routes.main} />;
+    }
 
     return (
         <>

@@ -1,11 +1,10 @@
 import React from "react";
 import {useFormik} from "formik";
-import {NavLink} from "react-router-dom";
 import {Button} from "../../components/common/Button/Button";
 import styled from "styled-components";
 import {InputText} from "../../components/common/InputText/InputText";
 import {useDispatch} from "react-redux";
-import {routes} from "../../routes/routes";
+import {authApi} from "../../api/api";
 
 export type RegistrationFormT = {
     email: string;
@@ -45,7 +44,7 @@ export const Registration = () => {
         },
         validate,
         onSubmit: (values) => {
-            console.log(values);
+            const {email, password} = values;
         }
     });
     const inputValidation = (fieldType: "password" | "email" | "confirmPassword"): string => {
@@ -96,8 +95,7 @@ export const Registration = () => {
                         />
 
                         {/*{registrationError && <div>{registrationError}</div>}*/}
-                        <Button type={"submit"}>Sing up</Button>
-                        <NavLink to={routes.login}>Login</NavLink>
+                        <Button type={"submit"}>Submit</Button>
                     </StyledForm>
                 </div>
             </>
