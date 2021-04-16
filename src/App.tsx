@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {Route, Switch} from 'react-router-dom';
+import {routes} from "./routes/routes";
+import {WorkersTable} from './pages/WorkersTable/WorkersTable';
+import {Login} from './pages/Login/Login';
+import {Registration} from "./pages/Registration/Registration";
+import {NotFound} from './pages/NotFound/NotFound';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <>
+            <Header/>
+            <Main/>
+        </>
+
+    );
 }
 
 export default App;
+
+
+export const Header = () => {
+    return (
+        <div>
+
+        </div>
+    )
+}
+
+
+export const Main = () => {
+    return (
+        <main>
+            <Switch>
+                <Route exact path={routes.main} render={() => <WorkersTable />} />
+                <Route exact path={routes.login} render={() => <Login />} />
+                <Route exact path={routes.registration} render={() => <Registration />} />
+                <Route render={() => <NotFound />} />
+            </Switch>
+        </main>
+    )
+}
