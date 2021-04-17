@@ -1,14 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Redirect} from "react-router-dom";
 import {routes} from "../../App/routes/routes";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootStateT} from "../../App/store/store";
 import styled from "styled-components/macro";
-import {WorkersT} from "./workersTableReducer";
+import {getWorkersSA, WorkersT} from "./workersTableReducer";
 
 export const WorkersTable = () => {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getWorkersSA())
+    }, [dispatch])
+
     const isLoggedIn = useSelector<RootStateT, boolean>(state => state.login.isLoggedIn);
-    const workers = useSelector<RootStateT, Array<WorkersT>>(state => state.workers.workers)
+    const workers = useSelector<RootStateT, Array<WorkersT>>(state => state.workers.workers);
 
     if (!isLoggedIn) {
         return <Redirect to={routes.login} />;
@@ -31,7 +37,7 @@ export const WorkersTable = () => {
                     </thead>
                     <tbody>
                     {workers.map((w, i) => {
-                        return <tr>
+                        return <tr key={w._id}>
                             <td>{i}</td>
                             <td>{w.fullName}</td>
                             <td>{w.gender}</td>

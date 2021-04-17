@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from "axios";
+import {WorkersT} from "../pages/WorkersTable/workersTableReducer";
 
 const instance = axios.create({
     baseURL: 'https://workers-panel.herokuapp.com/',
@@ -40,6 +41,10 @@ export type RegisterRespT = {
     message: string
 }
 
+export type GetWorkersRespT = {
+    count: number;
+    workers: Array<WorkersT>
+}
 
 
 export const authApi = {
@@ -61,5 +66,8 @@ export const authApi = {
 };
 
 export const workersApi = {
-
+    async getWorkers() {
+        const res = await instance.get<AxiosResponse<GetWorkersRespT>>("workers");
+        return res.data.data.workers;
+    }
 };

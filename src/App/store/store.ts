@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 import createSagaMiddleware from "redux-saga";
 import {loginReducer, loginWatcher} from "../../pages/Login/loginReducer";
 import {registrationReducer, registrationWatcher} from "../../pages/Registration/registrationReducer";
-import {workersTableReducer} from "../../pages/WorkersTable/workersTableReducer";
+import {workersTableReducer, workersWatcher} from "../../pages/WorkersTable/workersTableReducer";
 import { all } from 'redux-saga/effects'
 import {appWatcher} from "../appReducer";
 
@@ -21,5 +21,5 @@ export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 sagaMiddleware.run(rootWatcher);
 
 function* rootWatcher() {
-    yield all([loginWatcher(), appWatcher(), registrationWatcher()])
+    yield all([loginWatcher(), appWatcher(), registrationWatcher(), workersWatcher()])
 }
