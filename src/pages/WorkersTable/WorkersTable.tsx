@@ -55,7 +55,7 @@ export const WorkersTable = () => {
                     <tbody>
                     {workers.map((w, i) => {
                         const deleteWorker = () => {
-                            dispatch(deleteWorkersSA(w._id && w._id))
+                            w._id && dispatch(deleteWorkersSA(w._id))
                         }
 
                         return <TableBodyRow key={w._id}>
@@ -63,7 +63,7 @@ export const WorkersTable = () => {
                             <TableData>{w.fullName}</TableData>
                             <TableData>{w.gender}</TableData>
                             <TableData>{w.contacts}</TableData>
-                            <TableData>{formatDate(w.updated)}</TableData>
+                            <TableData>{w.updated && formatDate(w.updated)}</TableData>
                             <TableData>{w.salary}</TableData>
                             <TableData>{w.position}</TableData>
                             <TableDataUsePanel>

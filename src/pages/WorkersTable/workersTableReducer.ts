@@ -1,8 +1,9 @@
-// * Types
-
 import {call, put, takeEvery} from "redux-saga/effects";
 import {AddWorkerRespT, DeleteWorkerRespT, workersApi} from "../../api/api";
 import {AxiosResponse} from "axios";
+import {v1} from "uuid";
+
+// * Types
 
 export type NewWorkerT = {
     // _id?: string,
@@ -15,8 +16,8 @@ export type NewWorkerT = {
 }
 
 export type WorkersT = NewWorkerT & {
-    _id: string,
-    updated: string
+    _id?: string,
+    updated?: string
     // fullName: string,
     // gender: "male" | "female",
     // contacts: string,
@@ -63,7 +64,7 @@ export const workersTableReducer = (state = initialState, action: ActionsT): Ini
         case ADD_WORKER: {
             return {
                 ...state,
-                workers: [...state.workers, {...action.workerData, _id: "", updated: ""}]
+                workers: [...state.workers, {...action.workerData}]
             }
         }
         case DELETE_WORKER: {
@@ -89,6 +90,7 @@ const setWorkers = (payload: Array<WorkersT>) => {
 const addWorker = (workerData: NewWorkerT) => {
     return {
         type: reducerActions.ADD_WORKER,
+        id: v1(),
         workerData
     } as const
 }
@@ -143,6 +145,7 @@ function* addWorkerWorker(action: ReturnType<typeof addWorkersSA>) {
     try {
         const resp: AxiosResponse<AddWorkerRespT> = yield call(workersApi.addWorker, action.payload);
         yield put(addWorker(action.payload));
+        yield put(getWorkersSA());
         console.log(resp.data.message)
     } catch(err) {
         console.log(err.message)
