@@ -1,5 +1,5 @@
 import axios, {AxiosResponse} from "axios";
-import {WorkersT} from "../pages/WorkersTable/workersTableReducer";
+import {NewWorkerT, WorkersT} from "../pages/WorkersTable/workersTableReducer";
 
 const instance = axios.create({
     baseURL: 'https://workers-panel.herokuapp.com/',
@@ -51,6 +51,11 @@ export type DeleteWorkerRespT = {
     message: string
 }
 
+export type AddWorkerRespT = {
+    resultCode: number,
+    message: string
+}
+
 
 export const authApi = {
     async me() {
@@ -75,8 +80,11 @@ export const workersApi = {
         const res = await instance.get<AxiosResponse<GetWorkersRespT>>("workers");
         return res.data.data.workers;
     }   ,
-    async deleteWorkers(id: string) {
+    async deleteWorker(id: string) {
         return await instance.delete<AxiosResponse<DeleteWorkerRespT>>(`workers/${id}`);
+    },
+    async addWorker(data: NewWorkerT) {
+        return await instance.post<AxiosResponse<AddWorkerRespT>>(`workers`, data);
     }
 
 };

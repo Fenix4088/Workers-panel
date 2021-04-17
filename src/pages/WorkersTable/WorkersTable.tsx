@@ -4,10 +4,9 @@ import {routes} from "../../App/routes/routes";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateT} from "../../App/store/store";
 import styled from "styled-components/macro";
-import {deleteWorkersSA, getWorkersSA, WorkersT} from "./workersTableReducer";
+import {addWorkersSA, deleteWorkersSA, getWorkersSA, WorkersT} from "./workersTableReducer";
 import {formatDate} from "../../helpers/helpers";
 import {WorkersPanelIcon} from "../../components/common/SvgIcons/WorkersIcon";
-import {workersApi} from "../../api/api";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -23,12 +22,22 @@ export const WorkersTable = () => {
         return <Redirect to={routes.login}/>;
     }
 
+    const addWorker = () => {
+        dispatch(addWorkersSA({
+            contacts: "123231321321",
+            fullName: "Hardcoded Worker",
+            gender: "female",
+            position: "tester",
+            salary: "1200"
+        }))
+    }
+
 
 
     return (
         <>
             <h1>WorkersTable</h1>
-            <WorkersPanelIcon icon={"add"} width={"30"}/>
+            <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker}/>
             <TableWrapper>
                 <Table>
                     <thead>
@@ -46,7 +55,7 @@ export const WorkersTable = () => {
                     <tbody>
                     {workers.map((w, i) => {
                         const deleteWorker = () => {
-                            dispatch(deleteWorkersSA(w._id))
+                            dispatch(deleteWorkersSA(w._id && w._id))
                         }
 
                         return <TableBodyRow key={w._id}>
