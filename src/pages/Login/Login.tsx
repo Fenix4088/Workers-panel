@@ -93,7 +93,7 @@ export const Login = () => {
                     <Checkbox checked={formik.values.rememberMe} onChange={formik.handleChange} name={"rememberMe"}>
                         Remember me
                     </Checkbox>
-                    <Button type={"submit"}>Sing in</Button>
+                    <Button type={"submit"}>Login</Button>
                     <NavLink to={routes.registration}>Registration</NavLink>
                 </FormStyle>
                 {/*{loginError && <div>{loginError}</div>}*/}

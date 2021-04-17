@@ -7,6 +7,7 @@ import styled from "styled-components/macro";
 import {addWorkersSA, deleteWorkersSA, getWorkersSA, WorkersT} from "./workersTableReducer";
 import {formatDate} from "../../helpers/helpers";
 import {WorkersPanelIcon} from "../../components/common/SvgIcons/WorkersIcon";
+import { ModalWindow } from "../../components/Modal/ModalWindow";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -75,7 +76,7 @@ export const WorkersTable = () => {
                     </tbody>
                 </Table>
 
-
+                <ModalWindow/>
             </TableWrapper>
         </>
 
