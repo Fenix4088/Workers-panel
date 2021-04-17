@@ -1,8 +1,7 @@
 // * Types
 
 import {call, put, takeEvery} from "redux-saga/effects";
-import {GetWorkersRespT, workersApi} from "../../api/api";
-import {AxiosResponse} from "axios";
+import {workersApi} from "../../api/api";
 
 export type WorkersT = {
     _id: string,
@@ -12,7 +11,7 @@ export type WorkersT = {
     salary: string,
     position: string,
     createdAt: string,
-    updatedAt: string
+    updated: string
 }
 
 type ActionsT = ReturnType<typeof setWorkers>;

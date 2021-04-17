@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateT} from "../../App/store/store";
 import styled from "styled-components/macro";
 import {getWorkersSA, WorkersT} from "./workersTableReducer";
+import {formatDate} from "../../helpers/helpers";
+import {WorkersPanelIcon} from "../../components/common/SvgIcons/WorkersIcon";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -17,9 +19,9 @@ export const WorkersTable = () => {
     const workers = useSelector<RootStateT, Array<WorkersT>>(state => state.workers.workers);
 
     if (!isLoggedIn) {
-        return <Redirect to={routes.login} />;
+        return <Redirect to={routes.login}/>;
     }
-    return(
+    return (
         <>
             <h1>WorkersTable</h1>
             <TableWrapper>
@@ -33,22 +35,30 @@ export const WorkersTable = () => {
                         <th>updated</th>
                         <th>salary</th>
                         <th>position</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {workers.map((w, i) => {
-                        return <tr key={w._id}>
-                            <td>{i}</td>
-                            <td>{w.fullName}</td>
-                            <td>{w.gender}</td>
-                            <td>{w.contacts}</td>
-                            <td>{w.updatedAt}</td>
-                            <td>{w.salary}</td>
-                            <td>{w.position}</td>
-                        </tr>
+                        return <TableBodyRow key={w._id}>
+                            <TableData>{i}</TableData>
+                            <TableData>{w.fullName}</TableData>
+                            <TableData>{w.gender}</TableData>
+                            <TableData>{w.contacts}</TableData>
+                            <TableData>{formatDate(w.updated)}</TableData>
+                            <TableData>{w.salary}</TableData>
+                            <TableData>{w.position}</TableData>
+                            <TableDataUsePanel>
+                                <WorkersPanelIcon icon={"add"} width={"20"}/>
+                                <WorkersPanelIcon icon={"delete"} width={"20"}/>
+                                <WorkersPanelIcon icon={"update"} width={"20"}/>
+                            </TableDataUsePanel>
+                        </TableBodyRow>
                     })}
                     </tbody>
                 </Table>
+
+
             </TableWrapper>
         </>
 
@@ -60,9 +70,27 @@ const TableWrapper = styled.div`
 `;
 
 const Table = styled.table`
-    width: 80%;
-    border-collapse: collapse;
-    border: 1px solid black;
-    
+  width: 80%;
+  border-collapse: collapse;
+  border: 1px solid black;
 `;
+
+const TableBodyRow = styled.tr``
+const TableData = styled.td`
+  text-align: center;
+`
+
+const TableDataUsePanel = styled.td`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+`
+
 
