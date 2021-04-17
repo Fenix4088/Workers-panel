@@ -27,9 +27,18 @@ export type LoginRespT = {
     }
 }
 
+export type AuthRespT = {
+    data: {
+        email: string
+        _id: string
+    }
+}
+
+
+
 export const authApi = {
     async me() {
-        return await instance.post("auth/me");
+        return await instance.post<AxiosResponse<AuthRespT>>("auth/me");
     },
 
     async registration(data: RegistrationDataT) {

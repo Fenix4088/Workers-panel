@@ -41,7 +41,7 @@ export const loginReducer = (state = initialState, action: ActionsT): InitialSta
 }
 
 // * AC
-const setIsLoggedIn = (status: boolean) => {
+export const setIsLoggedIn = (status: boolean) => {
     return {
         type: reducerActions.LOGIN,
         status
@@ -57,7 +57,6 @@ export function* loginWatcher() {
 export function* loginWorker(action: ReturnType<typeof loginSA>) {
     try {
         const res: AxiosResponse<LoginRespT> = yield call(authApi.login, action.payload);
-        console.log(res);
         yield put(setIsLoggedIn(true));
         //TODO: Show message
         console.log("Nice to see you !");
