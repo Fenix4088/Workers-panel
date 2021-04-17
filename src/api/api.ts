@@ -60,4 +60,6 @@ export const authApi = {
     }
 };
 
-export const workersApi = {};
+export const workersApi = {
+
+};
