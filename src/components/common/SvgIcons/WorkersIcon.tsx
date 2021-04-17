@@ -1,5 +1,6 @@
 import React, {HTMLAttributes} from "react";
 import {DetailedHTMLProps} from "react";
+import styled from "styled-components/macro";
 
 type WorkersPanelIconT = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {
     icon: "add" | "update" | "delete"
@@ -42,9 +43,13 @@ export const WorkersPanelIcon = (props: WorkersPanelIconT) => {
     }
 
     return (
-        <div
+        <IconWrapper
             {...restProps}>
             {finalIcon}
-        </div>
+        </IconWrapper>
     )
 }
+
+const IconWrapper = styled.div<any>`
+    cursor: pointer;
+`

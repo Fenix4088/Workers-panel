@@ -46,6 +46,11 @@ export type GetWorkersRespT = {
     workers: Array<WorkersT>
 }
 
+export type DeleteWorkerRespT = {
+    resultCode: number,
+    message: string
+}
+
 
 export const authApi = {
     async me() {
@@ -69,5 +74,9 @@ export const workersApi = {
     async getWorkers() {
         const res = await instance.get<AxiosResponse<GetWorkersRespT>>("workers");
         return res.data.data.workers;
+    }   ,
+    async deleteWorkers(id: string) {
+        return await instance.delete<AxiosResponse<DeleteWorkerRespT>>(`workers/${id}`);
     }
+
 };
