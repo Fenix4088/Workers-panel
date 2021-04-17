@@ -35,6 +35,12 @@ export type AuthRespT = {
 }
 
 
+export type RegisterRespT = {
+    resultCode: number,
+    message: string
+}
+
+
 
 export const authApi = {
     async me() {
@@ -42,7 +48,7 @@ export const authApi = {
     },
 
     async registration(data: RegistrationDataT) {
-        return await instance.post("auth/register", data);
+        return await instance.post<AxiosResponse<RegisterRespT>>("auth/register", data);
     },
 
     async login(data: LoginDataT) {

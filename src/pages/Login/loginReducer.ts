@@ -9,7 +9,6 @@ type InitialStateT = {
     isLoggedIn: boolean,
 }
 
-
 // * Actions
 const sagasLoginActions = {
     LOGIN: "SAGA/LOGIN/LOGIN",

@@ -3,8 +3,12 @@ import {useFormik} from "formik";
 import {Button} from "../../components/common/Button/Button";
 import styled from "styled-components";
 import {InputText} from "../../components/common/InputText/InputText";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {authApi} from "../../api/api";
+import {RootStateT} from "../../App/store/store";
+import {Redirect} from "react-router-dom";
+import {routes} from "../../App/routes/routes";
+import {registrationSA} from "./registrationReducer";
 
 export type RegistrationFormT = {
     email: string;
@@ -14,6 +18,7 @@ export type RegistrationFormT = {
 
 export const Registration = () => {
     const dispatch = useDispatch();
+    const isRegistered = useSelector<RootStateT, boolean>(state => state.registration.isRegistered)
 
     const validate = (values: RegistrationFormT) => {
         const errors: RegistrationFormT = {} as RegistrationFormT;
@@ -45,14 +50,18 @@ export const Registration = () => {
         validate,
         onSubmit: (values) => {
             const {email, password} = values;
+            dispatch(registrationSA({email, password}))
         }
     });
     const inputValidation = (fieldType: "password" | "email" | "confirmPassword"): string => {
         return formik.touched[fieldType] && formik.errors[fieldType] ? `${formik.errors[fieldType]}` : "";
     };
-    // if (isRegistred) {
-    //     return <Redirect to={"/login"} />;
-    // }
+
+
+    if (isRegistered) {
+        return <Redirect to={routes.login} />;
+    }
+
     return (
         <>
             <>
