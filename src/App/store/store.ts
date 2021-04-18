@@ -4,14 +4,15 @@ import {loginReducer, loginWatcher} from "../../pages/Login/loginReducer";
 import {registrationReducer, registrationWatcher} from "../../pages/Registration/registrationReducer";
 import {workersTableReducer, workersWatcher} from "../../pages/WorkersTable/workersTableReducer";
 import { all } from 'redux-saga/effects'
-import {appWatcher} from "../appReducer";
+import {appReducer, appWatcher} from "../appReducer";
 
 export type RootStateT = ReturnType<typeof rootReducer>
 
 const rootReducer = combineReducers({
     login: loginReducer,
     registration: registrationReducer,
-    workers: workersTableReducer
+    workers: workersTableReducer,
+    app: appReducer
 });
 
 const sagaMiddleware = createSagaMiddleware()

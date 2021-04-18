@@ -7,11 +7,13 @@ import styled from "styled-components/macro";
 import {addWorkersSA, deleteWorkersSA, getWorkersSA, WorkersT} from "./workersTableReducer";
 import {formatDate} from "../../helpers/helpers";
 import {WorkersPanelIcon} from "../../components/common/SvgIcons/WorkersIcon";
-import { ModalWindow } from "../../components/Modal/ModalWindow";
+import {ModalWindow} from "../../components/Modal/ModalWindow";
 import {v1} from "uuid";
+import {changeModalStatus, ModalStatusT} from "../../App/appReducer";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
+    const modalStatus = useSelector<RootStateT, ModalStatusT>(state => state.app.modalStatus)
 
     useEffect(() => {
         dispatch(getWorkersSA())
@@ -25,15 +27,16 @@ export const WorkersTable = () => {
     }
 
     const addWorker = () => {
-        dispatch(addWorkersSA({
-            contacts: "123231321321",
-            fullName: "Hardcoded Worker",
-            gender: "female",
-            position: "tester",
-            salary: "1200"
-        }))
+        dispatch(changeModalStatus({isVisible: true, modalType: "add", optionalData: {} as WorkersT}))
+        //! Activate saga logic
+        /*        dispatch(addWorkersSA({
+                    contacts: "123231321321",
+                    fullName: "Hardcoded Worker",
+                    gender: "female",
+                    position: "tester",
+                    salary: "1200"
+                }))*/
     }
-
 
 
     return (
@@ -56,6 +59,11 @@ export const WorkersTable = () => {
                     </thead>
                     <tbody>
                     {workers.map((w, i) => {
+
+                        const updateWorker = () => {
+                            dispatch(changeModalStatus({isVisible: true, modalType: "update", optionalData: w}))
+                        }
+
                         const deleteWorker = () => {
                             w._id && dispatch(deleteWorkersSA(w._id))
                         }
@@ -70,14 +78,14 @@ export const WorkersTable = () => {
                             <TableData>{w.position}</TableData>
                             <TableDataUsePanel>
                                 <WorkersPanelIcon icon={"delete"} width={"20"} onClick={deleteWorker}/>
-                                <WorkersPanelIcon icon={"update"} width={"20"}/>
+                                <WorkersPanelIcon icon={"update"} width={"20"} onClick={updateWorker}/>
                             </TableDataUsePanel>
                         </TableBodyRow>
                     })}
                     </tbody>
                 </Table>
 
-                <ModalWindow/>
+                {modalStatus.isVisible && <ModalWindow type={modalStatus.modalType}/>}
             </TableWrapper>
         </>
 
@@ -106,6 +114,7 @@ const TableDataUsePanel = styled.td`
 
   & > div {
     margin-right: 5px;
+
     &:last-child {
       margin-right: 0;
     }

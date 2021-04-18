@@ -4,31 +4,58 @@ import {InputText} from "../common/InputText/InputText";
 import {RadioButtons} from "../common/RadioButtons/RadioButtons";
 import {Button} from "../common/Button/Button";
 import {WorkersPanelIcon} from "../common/SvgIcons/WorkersIcon";
-import {Field, useFormik} from "formik";
-import {loginSA} from "../../pages/Login/loginReducer";
+import {useFormik} from "formik";
+import {useDispatch, useSelector} from "react-redux";
+import {RootStateT} from "../../App/store/store";
+import {changeModalStatus, ModalStatusT} from "../../App/appReducer";
+import {WorkersT} from "../../pages/WorkersTable/workersTableReducer";
 
-export const ModalWindow = () => {
+type ModalWindowPropsT = {
+    type?: "add" | "update"
+}
 
-    const formik = useFormik({
-        initialValues: {
+export const ModalWindow: React.FC<ModalWindowPropsT> = ({type = "add", ...restProps}) => {
+    const dispatch = useDispatch();
+    const updatingWorker = useSelector<RootStateT, WorkersT>(state => state.app.modalStatus.optionalData)
+    let initialWorkerData;
+
+    if (type === "add") {
+        initialWorkerData = {
             name: "",
             contacts: "",
             gender: "",
             salary: "",
             position: "",
-        },
+        }
+    } else {
+        initialWorkerData = {
+            name: updatingWorker.fullName,
+            contacts: updatingWorker.contacts,
+            gender: updatingWorker.gender,
+            salary: updatingWorker.salary,
+            position: updatingWorker.position,
+        }
+    }
+
+
+    const formik = useFormik({
+        initialValues: initialWorkerData,
         // validate,
         onSubmit: (values) => {
             console.log(values)
         }
     });
 
+    const closeModalHandler = () => {
+        dispatch(changeModalStatus({isVisible: false, optionalData: {} as WorkersT}))
+    }
+
     return (
         <ModalForm onSubmit={formik.handleSubmit}>
             <IconWrap>
-                <WorkersPanelIcon icon={"close"} width={"20"}/>
+                <WorkersPanelIcon icon={"close"} width={"20"} onClick={closeModalHandler}/>
             </IconWrap>
-            <h3>Add new worker</h3>
+            <h3>{type === "add" ? "Add new worker" : "Update worker data"}</h3>
             <InputText
                 type={"name"}
                 value={formik.values.name}
@@ -38,9 +65,11 @@ export const ModalWindow = () => {
                 onBlur={formik.handleBlur}
                 placeholder={"Full name"}
             />
-                <RadioWrap role="group" aria-labelledby="my-radio-group">
-                    <RadioButtons options={["male", "female"]} onChange={formik.handleChange} value={"male"}/>
-                </RadioWrap>
+
+            <RadioWrap role="group" aria-labelledby="my-radio-group">
+                <RadioButtons options={["male", "female"]} onChange={formik.handleChange}
+                              value={formik.initialValues.gender}/>
+            </RadioWrap>
 
             <InputText
                 type={"contacts"}
@@ -69,7 +98,8 @@ export const ModalWindow = () => {
                 onBlur={formik.handleBlur}
                 placeholder={"Position"}
             />
-            <Button type={"submit"}>Add</Button>
+
+            <Button type={"submit"}>{type === "add" ? "Add" : "Update"}</Button>
         </ModalForm>
     )
 }
