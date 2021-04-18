@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { routes } from "../../App/routes/routes";
 import { loginSA } from "./loginReducer";
 import { RootStateT } from "../../App/store/store";
+import { MB } from "../../styles/GlobalStyles";
 
 export type LoginFormT = {
     email: string;
@@ -70,29 +71,35 @@ export const Login = () => {
                     {/*)}*/}
                     <span>Sing in</span>
 
-                    <InputText
-                        type={"email"}
-                        value={formik.values.email}
-                        id={"email"}
-                        name={"email"}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        placeholder={"Email"}
-                        error={inputValidation("email")}
-                    />
-                    <InputText
-                        type={"password"}
-                        value={formik.values.password}
-                        name={"password"}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        placeholder={"Password"}
-                        error={inputValidation("password")}
-                    />
+                    <MB margin={"20px"}>
+                        <InputText
+                            type={"email"}
+                            value={formik.values.email}
+                            id={"email"}
+                            name={"email"}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder={"Email"}
+                            error={inputValidation("email")}
+                        />
+                    </MB>
+                    <MB margin={"20px"}>
+                        <InputText
+                            type={"password"}
+                            value={formik.values.password}
+                            name={"password"}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            placeholder={"Password"}
+                            error={inputValidation("password")}
+                        />
+                    </MB>
 
-                    <Checkbox checked={formik.values.rememberMe} onChange={formik.handleChange} name={"rememberMe"}>
-                        Remember me
-                    </Checkbox>
+                    <MB margin={"20px"}>
+                        <Checkbox checked={formik.values.rememberMe} onChange={formik.handleChange} name={"rememberMe"}>
+                            Remember me
+                        </Checkbox>
+                    </MB>
                     <Button type={"submit"}>Login</Button>
                     <NavLink to={routes.registration}>Registration</NavLink>
                 </FormStyle>
@@ -105,7 +112,7 @@ export const Login = () => {
 const FormStyle = styled.form`
     margin: 0 auto;
     padding: 10px 15px;
-    width: 50%;
+    width: 30%;
     min-width: 300px;
     position: relative;
     display: flex;

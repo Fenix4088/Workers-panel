@@ -53,7 +53,6 @@ export const InputText: React.FC<SuperInputTextPropsType> = ({
 
 const InputTextWrapper = styled.div`
     position: relative;
-
     width: 100%;
 `;
 
@@ -61,7 +60,6 @@ const StyledInput = styled.input<StyledComponentProps<any, any, any, any>>`
     // Общие стили инпута
 
     padding: 1rem 0.5rem;
-    margin-bottom: 20px;
 
     height: 20px;
     width: 100%;

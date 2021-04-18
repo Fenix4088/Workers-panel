@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components/macro";
 import { ThemeType } from "./theme";
+import styled from "styled-components";
 
 export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
   // Import the font link into the project
@@ -56,3 +57,7 @@ export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
     resize: none;
   }
 `;
+
+export const MB = styled.div<any>`
+    margin-bottom: ${props => props.margin};
+`

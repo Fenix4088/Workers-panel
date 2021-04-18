@@ -11,6 +11,7 @@ import { v1 } from "uuid";
 import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
 import { InputText } from "../../components/common/InputText/InputText";
+import { MB } from "../../styles/GlobalStyles";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -39,8 +40,11 @@ export const WorkersTable = () => {
     return (
         <>
             <h1>WorkersTable</h1>
-            <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
-            <Search></Search>
+            <TablePanelWrap>
+                <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
+                <Search />
+            </TablePanelWrap>
+
             <TableWrapper>
                 <Table>
                     <thead>
@@ -86,9 +90,12 @@ export const Search = () => {
     };
 
     return (
-        <>
+        <SearchWrap>
+            <SearchIconWrap>
+                <WorkersPanelIcon icon={"search"} width={"20"} />
+            </SearchIconWrap>
             <InputText value={searchVal} type={"search"} placeholder={"Search by name..."} onInput={searchWorkers} />
-        </>
+        </SearchWrap>
     );
 };
 
@@ -100,4 +107,22 @@ const Table = styled.table`
     width: 80%;
     border-collapse: collapse;
     border: 1px solid black;
+`;
+
+const SearchWrap = styled.div`
+    width: 20%;
+    position: relative;
+`;
+
+const SearchIconWrap = styled.div`
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    transform: translateY(-50%);
+    z-index: 100;
+`;
+
+const TablePanelWrap = styled.div`
+    display: flex;
+    align-items: center;
 `;

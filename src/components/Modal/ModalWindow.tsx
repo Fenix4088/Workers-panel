@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
 import { changeModalStatus } from "../../App/appReducer";
 import { addWorkersSA, updateWorkerSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
+import { MB } from "../../styles/GlobalStyles";
 
 type ModalWindowPropsT = {
     type?: "add" | "update";
@@ -58,15 +59,17 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
                 <WorkersPanelIcon icon={"close"} width={"20"} onClick={closeModalHandler} />
             </IconWrap>
             <h3>{type === "add" ? "Add new worker" : "Update worker data"}</h3>
-            <InputText
-                type={"name"}
-                value={formik.values.fullName}
-                id={"fullName"}
-                name={"fullName"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder={"Full name"}
-            />
+            <MB margin={"20px"}>
+                <InputText
+                    type={"name"}
+                    value={formik.values.fullName}
+                    id={"fullName"}
+                    name={"fullName"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder={"Full name"}
+                />
+            </MB>
 
             <RadioWrap role="group" aria-labelledby="my-radio-group">
                 <RadioButtons
@@ -76,33 +79,39 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
                 />
             </RadioWrap>
 
-            <InputText
-                type={"contacts"}
-                value={formik.values.contacts}
-                id={"contacts"}
-                name={"contacts"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder={"Contacts"}
-            />
-            <InputText
-                type={"salary"}
-                value={formik.values.salary}
-                id={"salary"}
-                name={"salary"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder={"Salary"}
-            />
-            <InputText
-                type={"position"}
-                value={formik.values.position}
-                id={"position"}
-                name={"position"}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                placeholder={"Position"}
-            />
+            <MB margin={"20px"}>
+                <InputText
+                    type={"contacts"}
+                    value={formik.values.contacts}
+                    id={"contacts"}
+                    name={"contacts"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder={"Contacts"}
+                />
+            </MB>
+            <MB margin={"20px"}>
+                <InputText
+                    type={"salary"}
+                    value={formik.values.salary}
+                    id={"salary"}
+                    name={"salary"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder={"Salary"}
+                />
+            </MB>
+            <MB margin={"20px"}>
+                <InputText
+                    type={"position"}
+                    value={formik.values.position}
+                    id={"position"}
+                    name={"position"}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder={"Position"}
+                />
+            </MB>
 
             <Button type={"submit"}>{type === "add" ? "Add" : "Update"}</Button>
         </ModalForm>
