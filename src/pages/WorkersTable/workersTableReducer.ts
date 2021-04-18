@@ -22,7 +22,8 @@ type ActionsT =
     | ReturnType<typeof setWorkers>
     | ReturnType<typeof deleteWorker>
     | ReturnType<typeof addWorker>
-    | ReturnType<typeof updateWorker>;
+    | ReturnType<typeof updateWorker>
+    | ReturnType<typeof setFilteredWorkers>;
 
 type InitialStateT = {
     workers: Array<WorkersT>;
@@ -39,7 +40,8 @@ const reducerActions = {
     SET_WORKERS: "workersTableReducer/SET_WORKERS" as const,
     DELETE_WORKER: "workersTableReducer/DELETE_WORKER" as const,
     ADD_WORKER: "workersTableReducer/ADD_WORKER" as const,
-    UPDATE_WORKER: "workersTableReducer/UPDATE_WORKER" as const
+    UPDATE_WORKER: "workersTableReducer/UPDATE_WORKER" as const,
+    SET_FILTERED_WORKERS: "workersTableReducer/SET_FILTERED_WORKERS" as const
 };
 
 // * reducer
@@ -48,12 +50,18 @@ const initialState: InitialStateT = {
 };
 
 export const workersTableReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER } = reducerActions;
+    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER, SET_FILTERED_WORKERS } = reducerActions;
     switch (action.type) {
         case SET_WORKERS: {
             return {
                 ...state,
                 workers: action.payload
+            };
+        }
+        case SET_FILTERED_WORKERS: {
+            return {
+                ...state,
+                workers: [...action.workerData]
             };
         }
         case ADD_WORKER: {
@@ -109,6 +117,13 @@ const deleteWorker = (id: string) => {
 export const updateWorker = (workerData: WorkersT) => {
     return {
         type: reducerActions.UPDATE_WORKER,
+        workerData
+    } as const;
+};
+
+export const setFilteredWorkers = (workerData: Array<WorkersT>) => {
+    return {
+        type: reducerActions.SET_FILTERED_WORKERS,
         workerData
     } as const;
 };

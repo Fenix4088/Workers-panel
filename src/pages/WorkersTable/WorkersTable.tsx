@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { routes } from "../../App/routes/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
 import styled from "styled-components/macro";
-import { getWorkersSA, WorkersT } from "./workersTableReducer";
+import { getWorkersSA, setFilteredWorkers, WorkersT } from "./workersTableReducer";
 import { WorkersPanelIcon } from "../../components/common/SvgIcons/WorkersIcon";
 import { ModalWindow } from "../../components/Modal/ModalWindow";
 import { v1 } from "uuid";
 import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
+import { InputText } from "../../components/common/InputText/InputText";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export const WorkersTable = () => {
         <>
             <h1>WorkersTable</h1>
             <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
+            <Search></Search>
             <TableWrapper>
                 <Table>
                     <thead>
@@ -62,6 +64,30 @@ export const WorkersTable = () => {
 
                 {modalStatus.isVisible && <ModalWindow type={modalStatus.modalType} />}
             </TableWrapper>
+        </>
+    );
+};
+
+export const Search = () => {
+    const dispatch = useDispatch();
+    const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
+    const [searchVal, setSearchVal] = useState<string>("");
+
+    const searchWorkers = (e: FormEvent<HTMLInputElement>) => {
+        const { value } = e.currentTarget;
+        setSearchVal(value);
+
+        if (!value.trim()) {
+            dispatch(getWorkersSA());
+        } else {
+            const matchedWorkers = workers.filter((w) => w.fullName.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+            dispatch(setFilteredWorkers(matchedWorkers));
+        }
+    };
+
+    return (
+        <>
+            <InputText value={searchVal} type={"search"} placeholder={"Search by name..."} onInput={searchWorkers} />
         </>
     );
 };
