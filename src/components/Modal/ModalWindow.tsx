@@ -4,59 +4,77 @@ import {InputText} from "../common/InputText/InputText";
 import {RadioButtons} from "../common/RadioButtons/RadioButtons";
 import {Button} from "../common/Button/Button";
 import {WorkersPanelIcon} from "../common/SvgIcons/WorkersIcon";
+import {Field, useFormik} from "formik";
+import {loginSA} from "../../pages/Login/loginReducer";
 
 export const ModalWindow = () => {
+
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+            contacts: "",
+            gender: "",
+            salary: "",
+            position: "",
+        },
+        // validate,
+        onSubmit: (values) => {
+            console.log(values)
+        }
+    });
+
     return (
-        <ModalWrap>
+        <ModalForm onSubmit={formik.handleSubmit}>
             <IconWrap>
                 <WorkersPanelIcon icon={"close"} width={"20"}/>
             </IconWrap>
             <h3>Add new worker</h3>
             <InputText
-                type={"email"}
-                value={""}
-                id={"email"}
-                name={"email"}
-                /*onChange={formik.handleChange}
-                onBlur={formik.handleBlur}*/
+                type={"name"}
+                value={formik.values.name}
+                id={"name"}
+                name={"name"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder={"Full name"}
             />
-            <RadioWrap>
-                <RadioButtons options={["male", "female"]}/>
-            </RadioWrap>
+                <RadioWrap role="group" aria-labelledby="my-radio-group">
+                    <RadioButtons options={["male", "female"]} onChange={formik.handleChange} value={"male"}/>
+                </RadioWrap>
 
             <InputText
-                type={"email"}
-                value={""}
-                id={"email"}
-                name={"email"}
-                /*onChange={formik.handleChange}
-                onBlur={formik.handleBlur}*/
+                type={"contacts"}
+                value={formik.values.contacts}
+                id={"contacts"}
+                name={"contacts"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 placeholder={"Contacts"}
             />
             <InputText
-            type={"email"}
-            value={""}
-            id={"email"}
-            name={"email"}
-            /*onChange={formik.handleChange}
-            onBlur={formik.handleBlur}*/
-            placeholder={"Salary"}
-        /> <InputText
-            type={"email"}
-            value={""}
-            id={"email"}
-            name={"email"}
-            /*onChange={formik.handleChange}
-            onBlur={formik.handleBlur}*/
-            placeholder={"Position"}
-        />
+                type={"salary"}
+                value={formik.values.salary}
+                id={"salary"}
+                name={"salary"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder={"Salary"}
+            />
+            <InputText
+                type={"position"}
+                value={formik.values.position}
+                id={"position"}
+                name={"position"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder={"Position"}
+            />
             <Button type={"submit"}>Add</Button>
-        </ModalWrap>
+        </ModalForm>
     )
 }
 
-const ModalWrap = styled.form`
+const ModalForm = styled.form`
   padding: 20px;
   width: 20%;
   min-width: 200px;

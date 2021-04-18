@@ -8,6 +8,7 @@ import {addWorkersSA, deleteWorkersSA, getWorkersSA, WorkersT} from "./workersTa
 import {formatDate} from "../../helpers/helpers";
 import {WorkersPanelIcon} from "../../components/common/SvgIcons/WorkersIcon";
 import { ModalWindow } from "../../components/Modal/ModalWindow";
+import {v1} from "uuid";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -59,7 +60,7 @@ export const WorkersTable = () => {
                             w._id && dispatch(deleteWorkersSA(w._id))
                         }
 
-                        return <TableBodyRow key={w._id}>
+                        return <TableBodyRow key={w._id ? w._id : v1()}>
                             <TableData>{i}</TableData>
                             <TableData>{w.fullName}</TableData>
                             <TableData>{w.gender}</TableData>

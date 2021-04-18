@@ -28,11 +28,11 @@ export const RadioButtons: React.FC<PropsType> = ({
               <RadioContainer key={name + "-" + i}>
                   <span>{o}</span>
                   <input
-                      name={name}
+                      name={"gender"}
                       type={"radio"}
                       value={o}
-                      onChange={onChangeCallback}
-                      checked={value === o}
+                      onChange={onChange}
+                      // checked={value === o}
                       {...restProps}
                   />
                   <Checkmark className={"checkmark"} />
