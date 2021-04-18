@@ -67,11 +67,6 @@ export const Registration = () => {
             <>
                 <div>
                     <StyledForm onSubmit={formik.handleSubmit}>
-                        {/*{isPending && (*/}
-                        {/*    <Overlay>*/}
-                        {/*        <span>Loading...</span>*/}
-                        {/*    </Overlay>*/}
-                        {/*)}*/}
                         <span>Sing up</span>
 
                         <MB margin={"20px"}>

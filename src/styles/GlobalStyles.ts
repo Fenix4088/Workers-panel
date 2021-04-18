@@ -61,3 +61,10 @@ export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
 export const MB = styled.div<any>`
     margin-bottom: ${props => props.margin};
 `
+
+export const AppContainer = styled.div`
+  //border: 2px solid red;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 0 20px;
+`;

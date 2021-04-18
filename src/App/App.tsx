@@ -4,6 +4,7 @@ import { Header } from "../components/Header/Header";
 import { Main } from "../components/Main/Main";
 import { useDispatch } from "react-redux";
 import { authSA } from "./appReducer";
+import { AppContainer } from "../styles/GlobalStyles";
 
 function App() {
     const dispatch = useDispatch();
@@ -14,7 +15,9 @@ function App() {
     return (
         <>
             <Header />
-            <Main />
+            <AppContainer>
+                <Main />
+            </AppContainer>
         </>
     );
 }

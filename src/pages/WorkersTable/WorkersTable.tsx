@@ -1,17 +1,16 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { routes } from "../../App/routes/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
 import styled from "styled-components/macro";
-import { getWorkersSA, setFilteredWorkers, WorkersT } from "./workersTableReducer";
+import { getWorkersSA, WorkersT } from "./workersTableReducer";
 import { WorkersPanelIcon } from "../../components/common/SvgIcons/WorkersIcon";
 import { ModalWindow } from "../../components/Modal/ModalWindow";
 import { v1 } from "uuid";
 import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
-import { InputText } from "../../components/common/InputText/InputText";
-import { MB } from "../../styles/GlobalStyles";
+import { Search } from "../../components/Search/Search";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -72,33 +71,6 @@ export const WorkersTable = () => {
     );
 };
 
-export const Search = () => {
-    const dispatch = useDispatch();
-    const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
-    const [searchVal, setSearchVal] = useState<string>("");
-
-    const searchWorkers = (e: FormEvent<HTMLInputElement>) => {
-        const { value } = e.currentTarget;
-        setSearchVal(value);
-
-        if (!value.trim()) {
-            dispatch(getWorkersSA());
-        } else {
-            const matchedWorkers = workers.filter((w) => w.fullName.toLowerCase().indexOf(value.toLowerCase()) !== -1);
-            dispatch(setFilteredWorkers(matchedWorkers));
-        }
-    };
-
-    return (
-        <SearchWrap>
-            <SearchIconWrap>
-                <WorkersPanelIcon icon={"search"} width={"20"} />
-            </SearchIconWrap>
-            <InputText value={searchVal} type={"search"} placeholder={"Search by name..."} onInput={searchWorkers} />
-        </SearchWrap>
-    );
-};
-
 const TableWrapper = styled.div`
     overflow-x: auto;
 `;
@@ -107,19 +79,6 @@ const Table = styled.table`
     width: 80%;
     border-collapse: collapse;
     border: 1px solid black;
-`;
-
-const SearchWrap = styled.div`
-    width: 20%;
-    position: relative;
-`;
-
-const SearchIconWrap = styled.div`
-    position: absolute;
-    top: 50%;
-    right: 2%;
-    transform: translateY(-50%);
-    z-index: 100;
 `;
 
 const TablePanelWrap = styled.div`
