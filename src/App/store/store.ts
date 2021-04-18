@@ -1,12 +1,12 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import createSagaMiddleware from "redux-saga";
-import {loginReducer, loginWatcher} from "../../pages/Login/loginReducer";
-import {registrationReducer, registrationWatcher} from "../../pages/Registration/registrationReducer";
-import {workersTableReducer, workersWatcher} from "../../pages/WorkersTable/workersTableReducer";
-import { all } from 'redux-saga/effects'
-import {appReducer, appWatcher} from "../appReducer";
+import { loginReducer, loginWatcher } from "../../pages/Login/loginReducer";
+import { registrationReducer, registrationWatcher } from "../../pages/Registration/registrationReducer";
+import { workersTableReducer, workersWatcher } from "../../pages/WorkersTable/workersTableReducer";
+import { all } from "redux-saga/effects";
+import { appReducer, appWatcher } from "../appReducer";
 
-export type RootStateT = ReturnType<typeof rootReducer>
+export type RootStateT = ReturnType<typeof rootReducer>;
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -15,12 +15,12 @@ const rootReducer = combineReducers({
     app: appReducer
 });
 
-const sagaMiddleware = createSagaMiddleware()
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootWatcher);
 
 function* rootWatcher() {
-    yield all([loginWatcher(), appWatcher(), registrationWatcher(), workersWatcher()])
+    yield all([loginWatcher(), appWatcher(), registrationWatcher(), workersWatcher()]);
 }

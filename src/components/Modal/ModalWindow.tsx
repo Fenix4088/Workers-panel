@@ -7,8 +7,8 @@ import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
-import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
-import { addWorkersSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
+import { changeModalStatus } from "../../App/appReducer";
+import { addWorkersSA, updateWorkerSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 
 type ModalWindowPropsT = {
     type?: "add" | "update";
@@ -39,13 +39,11 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
 
     const formik = useFormik({
         initialValues: initialWorkerData,
-        // validate,
         onSubmit: (values) => {
             if (type === "add") {
-                console.log("add => ", values);
                 dispatch(addWorkersSA(values));
             } else {
-                console.log("update => ", values);
+                dispatch(updateWorkerSA({ ...updatingWorker, ...values }));
             }
 
             dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));

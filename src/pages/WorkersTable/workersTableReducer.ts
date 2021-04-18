@@ -1,77 +1,86 @@
-import {call, put, takeEvery} from "redux-saga/effects";
-import {AddWorkerRespT, DeleteWorkerRespT, workersApi} from "../../api/api";
-import {AxiosResponse} from "axios";
-import {v1} from "uuid";
+import { call, put, takeEvery } from "redux-saga/effects";
+import { AddWorkerRespT, DeleteWorkerRespT, UdateWorkerRespT, workersApi } from "../../api/api";
+import { AxiosResponse } from "axios";
+import { v1 } from "uuid";
 
 // * Types
 
 export type NewWorkerT = {
-    // _id?: string,
-    // updated?: string
-    fullName: string,
-    gender: "male" | "female",
-    contacts: string,
-    salary: string,
-    position: string,
-}
+    fullName: string;
+    gender: "male" | "female";
+    contacts: string;
+    salary: string;
+    position: string;
+};
 
 export type WorkersT = NewWorkerT & {
-    _id?: string,
-    updated?: string
-}
+    _id?: string;
+    updated?: string;
+};
 
-
-
-
-type ActionsT = ReturnType<typeof setWorkers> | ReturnType<typeof deleteWorker> | ReturnType<typeof addWorker>;
+type ActionsT =
+    | ReturnType<typeof setWorkers>
+    | ReturnType<typeof deleteWorker>
+    | ReturnType<typeof addWorker>
+    | ReturnType<typeof updateWorker>;
 
 type InitialStateT = {
-    workers: Array<WorkersT>
-}
+    workers: Array<WorkersT>;
+};
 
 // * Actions
 const sagasWorkersActions = {
     GET_WORKERS: "SAGA/WORKERS/GET_WORKERS" as const,
     DELETE_WORKER: "SAGA/WORKERS/DELETE_WORKER" as const,
     ADD_WORKER: "SAGA/WORKERS/ADD_WORKER" as const,
-}
+    UPDATE_WORKER: "SAGA/WORKERS/UPDATE_WORKER" as const
+};
 const reducerActions = {
     SET_WORKERS: "workersTableReducer/SET_WORKERS" as const,
     DELETE_WORKER: "workersTableReducer/DELETE_WORKER" as const,
     ADD_WORKER: "workersTableReducer/ADD_WORKER" as const,
-}
-
+    UPDATE_WORKER: "workersTableReducer/UPDATE_WORKER" as const
+};
 
 // * reducer
 const initialState: InitialStateT = {
-    workers: [] as Array<WorkersT>,
-}
+    workers: [] as Array<WorkersT>
+};
 
 export const workersTableReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const {SET_WORKERS, DELETE_WORKER, ADD_WORKER} = reducerActions;
+    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER } = reducerActions;
     switch (action.type) {
         case SET_WORKERS: {
             return {
                 ...state,
                 workers: action.payload
-            }
+            };
         }
         case ADD_WORKER: {
             return {
                 ...state,
-                workers: [...state.workers, {...action.workerData}]
-            }
+                workers: [...state.workers, { ...action.workerData }]
+            };
         }
         case DELETE_WORKER: {
             return {
                 ...state,
-                workers: state.workers.filter(w => w._id !== action.id)
-            }
+                workers: state.workers.filter((w) => w._id !== action.id)
+            };
+        }
+
+        case UPDATE_WORKER: {
+            return {
+                ...state,
+                workers: state.workers.map((w) =>
+                    w._id === action.workerData._id ? { ...w, ...action.workerData } : w
+                )
+            };
         }
         default:
             return state;
     }
-}
+};
 
 // * AC
 
@@ -79,53 +88,61 @@ const setWorkers = (payload: Array<WorkersT>) => {
     return {
         type: reducerActions.SET_WORKERS,
         payload
-    } as const
-}
+    } as const;
+};
 
 const addWorker = (workerData: NewWorkerT) => {
     return {
         type: reducerActions.ADD_WORKER,
         id: v1(),
         workerData
-    } as const
-}
+    } as const;
+};
 
 const deleteWorker = (id: string) => {
     return {
         type: reducerActions.DELETE_WORKER,
         id
-    } as const
-}
+    } as const;
+};
+
+export const updateWorker = (workerData: WorkersT) => {
+    return {
+        type: reducerActions.UPDATE_WORKER,
+        workerData
+    } as const;
+};
 
 // * Sagas
 export function* workersWatcher() {
     yield takeEvery(sagasWorkersActions.GET_WORKERS, getWorkersWorker);
     yield takeEvery(sagasWorkersActions.DELETE_WORKER, deleteWorkerWorker);
     yield takeEvery(sagasWorkersActions.ADD_WORKER, addWorkerWorker);
+    yield takeEvery(sagasWorkersActions.UPDATE_WORKER, updateWorkerWorker);
 }
 
 function* getWorkersWorker() {
     try {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);
         yield put(setWorkers(workers));
-    } catch(err) {
-        console.log(err.message)
+    } catch (err) {
+        console.log(err.message);
     }
 }
 
 export const getWorkersSA = () => {
     return {
-        type: sagasWorkersActions.GET_WORKERS,
+        type: sagasWorkersActions.GET_WORKERS
     } as const;
-}
+};
 
 function* deleteWorkerWorker(action: ReturnType<typeof deleteWorkersSA>) {
     try {
         const resp: AxiosResponse<DeleteWorkerRespT> = yield call(workersApi.deleteWorker, action.id);
         yield put(deleteWorker(action.id));
-        console.log(resp.data.message)
-    } catch(err) {
-        console.log(err.message)
+        console.log(resp.data.message);
+    } catch (err) {
+        console.log(err.message);
     }
 }
 
@@ -134,16 +151,16 @@ export const deleteWorkersSA = (id: string) => {
         type: sagasWorkersActions.DELETE_WORKER,
         id
     } as const;
-}
+};
 
 function* addWorkerWorker(action: ReturnType<typeof addWorkersSA>) {
     try {
         const resp: AxiosResponse<AddWorkerRespT> = yield call(workersApi.addWorker, action.payload);
         yield put(addWorker(action.payload));
         yield put(getWorkersSA());
-        console.log(resp.data.message)
-    } catch(err) {
-        console.log(err.message)
+        console.log(resp.data.message);
+    } catch (err) {
+        console.log(err.response.data.message);
     }
 }
 
@@ -151,7 +168,22 @@ export const addWorkersSA = (payload: NewWorkerT) => {
     return {
         type: sagasWorkersActions.ADD_WORKER,
         payload
-
     } as const;
+};
+
+function* updateWorkerWorker(action: ReturnType<typeof updateWorkerSA>) {
+    try {
+        const resp: AxiosResponse<UdateWorkerRespT> = yield call(workersApi.updateWorker, action.payload);
+        yield put(updateWorker(action.payload));
+        console.log(resp.data.message);
+    } catch (err) {
+        console.log(err.message);
+    }
 }
 
+export const updateWorkerSA = (payload: WorkersT) => {
+    return {
+        type: sagasWorkersActions.UPDATE_WORKER,
+        payload
+    } as const;
+};
