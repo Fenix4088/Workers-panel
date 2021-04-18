@@ -37,8 +37,9 @@ export const WorkersTable = () => {
         );
 
     return (
-        <>
-            <h1>WorkersTable</h1>
+        <MainTable>
+            <TableTitle>Workers Table</TableTitle>
+
             <TablePanelWrap>
                 <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
                 <Search />
@@ -47,7 +48,7 @@ export const WorkersTable = () => {
             <TableWrapper>
                 <Table>
                     <thead>
-                        <tr>
+                        <TableHeaderRow>
                             <th>#</th>
                             <th>Full Name</th>
                             <th>gender</th>
@@ -56,7 +57,7 @@ export const WorkersTable = () => {
                             <th>salary</th>
                             <th>position</th>
                             <th></th>
-                        </tr>
+                        </TableHeaderRow>
                     </thead>
                     <tbody>
                         {workers.map((w, i) => {
@@ -64,24 +65,43 @@ export const WorkersTable = () => {
                         })}
                     </tbody>
                 </Table>
-
                 {modalStatus.isVisible && <ModalWindow type={modalStatus.modalType} />}
             </TableWrapper>
-        </>
+        </MainTable>
     );
 };
+
+const MainTable = styled.div``;
 
 const TableWrapper = styled.div`
     overflow-x: auto;
 `;
 
 const Table = styled.table`
-    width: 80%;
+    width: 100%;
+    margin: 0 auto;
     border-collapse: collapse;
     border: 1px solid black;
 `;
 
 const TablePanelWrap = styled.div`
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
+
+    & > * {
+        margin-right: 20px;
+    }
+`;
+const TableTitle = styled.h1`
+    margin-bottom: 20px;
+    text-align: center;
+`;
+
+const TableHeaderRow = styled.tr`
+    background-color: ${({ theme }) => theme.color.secondary.main};
+
+    & > th {
+        padding: 20px;
+    }
 `;

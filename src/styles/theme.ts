@@ -34,6 +34,7 @@ export const theme = {
         black: '#1a1a1a',
         white: '#e9e9e9',
         error: '#db4545',
+        success: '#55e31b',
     },
     font: {
         source: `https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap`,

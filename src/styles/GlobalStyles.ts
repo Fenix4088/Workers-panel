@@ -63,8 +63,8 @@ export const MB = styled.div<any>`
 `
 
 export const AppContainer = styled.div`
-  //border: 2px solid red;
+  border: 2px solid red;
   margin: 0 auto;
   max-width: 1200px;
-  padding: 0 20px;
+  padding: 20px;
 `;

@@ -39,15 +39,27 @@ export const TableMainRow: React.FC<TableMainRowPropsT> = ({ workerData, index, 
     );
 };
 
-const TableBodyRow = styled.tr``;
+const TableBodyRow = styled.tr`
+    transition: all 0.2s ease;
+
+    &:nth-child(even) {
+        background-color: ${({ theme }) => theme.color.primary.light};
+    }
+
+    &:hover {
+        background-color: ${({ theme }) => theme.color.secondary.light};
+    }
+`;
 const TableData = styled.td`
     text-align: center;
+    padding: 10px 0;
 `;
 
 const TableDataUsePanel = styled.td`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 0;
 
     & > div {
         margin-right: 5px;
