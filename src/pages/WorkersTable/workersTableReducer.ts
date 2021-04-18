@@ -18,11 +18,6 @@ export type NewWorkerT = {
 export type WorkersT = NewWorkerT & {
     _id?: string,
     updated?: string
-    // fullName: string,
-    // gender: "male" | "female",
-    // contacts: string,
-    // salary: string,
-    // position: string,
 }
 
 
