@@ -8,7 +8,7 @@ import {useFormik} from "formik";
 import {useDispatch, useSelector} from "react-redux";
 import {RootStateT} from "../../App/store/store";
 import {changeModalStatus, ModalStatusT} from "../../App/appReducer";
-import {WorkersT} from "../../pages/WorkersTable/workersTableReducer";
+import {addWorkersSA, WorkersT} from "../../pages/WorkersTable/workersTableReducer";
 
 type ModalWindowPropsT = {
     type?: "add" | "update"
@@ -17,19 +17,19 @@ type ModalWindowPropsT = {
 export const ModalWindow: React.FC<ModalWindowPropsT> = ({type = "add", ...restProps}) => {
     const dispatch = useDispatch();
     const updatingWorker = useSelector<RootStateT, WorkersT>(state => state.app.modalStatus.optionalData)
-    let initialWorkerData;
+    let initialWorkerData: WorkersT;
 
     if (type === "add") {
         initialWorkerData = {
-            name: "",
+            fullName: "",
             contacts: "",
-            gender: "",
+            gender: "male",
             salary: "",
             position: "",
         }
     } else {
         initialWorkerData = {
-            name: updatingWorker.fullName,
+            fullName: updatingWorker.fullName,
             contacts: updatingWorker.contacts,
             gender: updatingWorker.gender,
             salary: updatingWorker.salary,
@@ -42,7 +42,15 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({type = "add", ...restP
         initialValues: initialWorkerData,
         // validate,
         onSubmit: (values) => {
-            console.log(values)
+            if (type === "add") {
+                console.log("add => ", values)
+                dispatch(addWorkersSA(values))
+
+            } else {
+                console.log("update => ", values)
+            }
+
+            dispatch(changeModalStatus({isVisible: false, optionalData: {} as WorkersT}))
         }
     });
 
@@ -58,9 +66,9 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({type = "add", ...restP
             <h3>{type === "add" ? "Add new worker" : "Update worker data"}</h3>
             <InputText
                 type={"name"}
-                value={formik.values.name}
-                id={"name"}
-                name={"name"}
+                value={formik.values.fullName}
+                id={"fullName"}
+                name={"fullName"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 placeholder={"Full name"}

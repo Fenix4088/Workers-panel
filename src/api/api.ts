@@ -56,6 +56,11 @@ export type AddWorkerRespT = {
     message: string
 }
 
+export type UdateWorkerRespT = {
+    resultCode: number,
+    message: string
+}
+
 
 export const authApi = {
     async me() {
@@ -85,6 +90,10 @@ export const workersApi = {
     },
     async addWorker(data: NewWorkerT) {
         return await instance.post<AxiosResponse<AddWorkerRespT>>(`workers`, data);
+    },
+
+    async updateWorker(data: WorkersT) {
+        return await instance.put<AxiosResponse<UdateWorkerRespT>>(`workers/${data._id}`, data);
     }
 
 };
