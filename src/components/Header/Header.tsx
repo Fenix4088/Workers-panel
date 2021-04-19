@@ -7,10 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
 import { logoutSA } from "../../pages/Login/loginReducer";
 import { AppContainer } from "../../styles/GlobalStyles";
+import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
+import {AuthUserDataT} from "../../App/appReducer";
 
 export const Header = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector<RootStateT, boolean>((state) => state.login.isLoggedIn);
+    const authUserData = useSelector<RootStateT, AuthUserDataT>((state) => state.app.authUserData);
 
     const logOutHandler = () => dispatch(logoutSA());
 
@@ -18,8 +21,16 @@ export const Header = () => {
         <NavBarWrap>
             <AppContainer>
                 <NavBar>
+
                     {isLoggedIn ? (
-                        <Button onClick={logOutHandler}>Logout</Button>
+                        <>
+                            <UserInfoWrap>
+                                <WorkersPanelIcon icon={"user"} width={"20"}/>
+                                <div>{authUserData.email}</div>
+                            </UserInfoWrap>
+                            <Button onClick={logOutHandler}>Logout</Button>
+                        </>
+
                     ) : (
                         <Button>
                             <NavLink to={routes.login}>Login</NavLink>
@@ -55,4 +66,14 @@ const NavBar = styled.nav`
             margin-right: 0;
         }
     }
+`;
+
+const UserInfoWrap = styled.div`
+  margin-right: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > div:first-child {
+    margin-right: 10px;
+  }
 `;

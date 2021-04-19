@@ -180,7 +180,6 @@ export function* workersWatcher() {
 }
 
 function* getWorkersWorker() {
-    debugger;
     yield put(tableLoading(true));
     try {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);

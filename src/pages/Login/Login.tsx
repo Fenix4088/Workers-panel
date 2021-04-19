@@ -103,7 +103,6 @@ export const Login = () => {
                     <Button type={"submit"}>Login</Button>
                     <NavLink to={routes.registration}>Registration</NavLink>
                 </FormStyle>
-                {/*{loginError && <div>{loginError}</div>}*/}
             </div>
         </>
     );

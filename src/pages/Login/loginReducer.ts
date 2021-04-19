@@ -3,6 +3,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {authApi, LoginDataT, LoginRespT, MessageRespT} from "../../api/api";
 import { AxiosResponse } from "axios";
 import { toast } from "../../helpers/helpers";
+import {setUserData} from "../../App/appReducer";
 
 type ActionsT = ReturnType<typeof setIsLoggedIn>;
 
@@ -57,7 +58,9 @@ export function* loginWatcher() {
 export function* loginWorker(action: ReturnType<typeof loginSA>) {
     try {
         const res: AxiosResponse<LoginRespT> = yield call(authApi.login, action.payload);
+        const {email, id} = res.data.data;
         yield put(setIsLoggedIn(true));
+        yield put(setUserData({email, id}));
         yield call(toast, "success", `Nice to see you, ${res.data.data.email}`);
     } catch (err) {
         yield put(setIsLoggedIn(false));
@@ -74,6 +77,7 @@ export const loginSA = (payload: LoginDataT) =>
 export function* logoutWorker() {
     try {
         const res: AxiosResponse<MessageRespT> = yield call(authApi.logout);
+        yield put(setUserData({email: "", id: ""}));
         yield put(setIsLoggedIn(false));
         yield call(toast, "success", res.data.message);
     } catch (err) {

@@ -12,6 +12,7 @@ import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
 import { Search } from "../../components/Search/Search";
 import { Loader } from "../../components/common/Loader/Loader";
+import { TableLoader } from "../../components/common/Loader/Loaders";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -40,9 +41,6 @@ export const WorkersTable = () => {
 
     return (
         <MainTable>
-            {/*<LoaderWrapper>*/}
-            {/*    <Loader size={200}/>*/}
-            {/*</LoaderWrapper>*/}
             <TableTitle>Workers Table</TableTitle>
 
             <TablePanelWrap>
@@ -81,15 +79,6 @@ export const WorkersTable = () => {
 };
 
 
-export const TableLoader = () => {
-    return(
-        <LoaderWrapper>
-            <td>
-                <Loader size={200} />
-            </td>
-        </LoaderWrapper>
-    )
-}
 
 const MainTable = styled.div``;
 
@@ -126,9 +115,4 @@ const TableHeaderRow = styled.tr`
     }
 `;
 
-const LoaderWrapper = styled.tr`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-`;
+

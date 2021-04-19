@@ -7,6 +7,7 @@ import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import styled from "styled-components/macro";
 import { RootStateT } from "../../App/store/store";
 import { Loader } from "../common/Loader/Loader";
+import { TableDataLoader } from "../common/Loader/Loaders";
 
 type TableMainRowPropsT = {
     workerData: WorkersT;
@@ -47,13 +48,7 @@ export const TableMainRow: React.FC<TableMainRowPropsT> = ({ workerData, index, 
     );
 };
 
-export const TableDataLoader = () => {
-    return (
-        <TableItemLoader>
-            <Loader size={25} color={"#dbb145"} />
-        </TableItemLoader>
-    );
-};
+
 
 const TableBodyRow = styled.tr`
     transition: all 0.2s ease;
@@ -87,8 +82,4 @@ const TableDataUsePanel = styled.td`
     }
 `;
 
-const TableItemLoader = styled.div`
-    position: absolute;
-    top: 50%;
-    transform: translateY(-10%);
-`;
+
