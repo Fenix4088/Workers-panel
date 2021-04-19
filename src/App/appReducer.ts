@@ -19,7 +19,7 @@ export type AuthUserDataT = {
     id: string
 };
 
-type InitialStateT = {
+export type InitialStateT = {
     isAuth: boolean;
     isAppLoading: boolean;
     modalStatus: ModalStatusT;
@@ -88,7 +88,7 @@ export const appReducer = (state = initialState, action: ActionsT): InitialState
 };
 
 // * AC
-const isAuth = (status: boolean) => {
+export const isAuth = (status: boolean) => {
     return {
         type: reducerActions.AUTH,
         status
