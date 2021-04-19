@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components/macro";
 import { InputText } from "../common/InputText/InputText";
 import { RadioButtons } from "../common/RadioButtons/RadioButtons";
@@ -18,6 +18,22 @@ type ModalWindowPropsT = {
 export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...restProps }) => {
     const dispatch = useDispatch();
     const updatingWorker = useSelector<RootStateT, WorkersT>((state) => state.app.modalStatus.optionalData);
+
+    useEffect(() => {
+        document.addEventListener("click", documentClickHandler);
+        return () => {
+            document.removeEventListener("click", documentClickHandler);
+        };
+    }, []);
+
+    const documentClickHandler = (e: MouseEvent) => {
+        const modalForm = document.querySelector("[data-form]");
+        //@ts-ignore
+        if (!e.path.includes(modalForm)) {
+            dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));
+        }
+    };
+
     let initialWorkerData: WorkersT;
 
     if (type === "add") {
@@ -56,11 +72,11 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
     const closeModalHandler = () => dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));
 
     return (
-        <ModalForm onSubmit={formik.handleSubmit}>
+        <ModalForm onSubmit={formik.handleSubmit} data-form={"modal"}>
             <IconWrap>
                 <WorkersPanelIcon icon={"close"} width={"20"} onClick={closeModalHandler} />
             </IconWrap>
-            <h3>{type === "add" ? "Add new worker" : "Update worker data"}</h3>
+            <ModalTitle>{type === "add" ? "Add new worker" : "Update worker data"}</ModalTitle>
             <MB margin={"20px"}>
                 <InputText
                     type={"name"}
@@ -121,16 +137,15 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
 };
 
 const ModalForm = styled.form`
-    padding: 20px;
+    padding: 30px 20px;
     width: 20%;
-    min-width: 200px;
+    min-width: 280px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px solid red;
     background-color: ${({ theme }) => theme.color.secondary.light};
-    z-index: 300
+    z-index: 300;
 `;
 
 const RadioWrap = styled.div`
@@ -143,4 +158,9 @@ const IconWrap = styled.div`
     position: absolute;
     right: 5%;
     top: 1%;
+`;
+
+const ModalTitle = styled.h3`
+    margin-bottom: 10px;
+    text-align: center;
 `;
