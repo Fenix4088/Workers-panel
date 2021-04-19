@@ -23,7 +23,7 @@ export const WorkersTable = () => {
 
     const isLoggedIn = useSelector<RootStateT, boolean>((state) => state.login.isLoggedIn);
     const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
-    const isAppLoading = useSelector<RootStateT, boolean>((state) => state.app.isAppLoading);
+    const isTableLoading = useSelector<RootStateT, boolean>((state) => state.workers.isTableLoading);
 
     if (!isLoggedIn) {
         return <Redirect to={routes.login} />;
@@ -65,10 +65,8 @@ export const WorkersTable = () => {
                         </TableHeaderRow>
                     </thead>
                     <tbody>
-                        {isAppLoading ? (
-                            <LoaderWrapper>
-                                <Loader size={200} />
-                            </LoaderWrapper>
+                        {isTableLoading ? (
+                            <TableLoader/>
                         ) : (
                             workers.map((w, i) => {
                                 return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
@@ -81,6 +79,17 @@ export const WorkersTable = () => {
         </MainTable>
     );
 };
+
+
+export const TableLoader = () => {
+    return(
+        <LoaderWrapper>
+            <td>
+                <Loader size={200} />
+            </td>
+        </LoaderWrapper>
+    )
+}
 
 const MainTable = styled.div``;
 
@@ -117,7 +126,7 @@ const TableHeaderRow = styled.tr`
     }
 `;
 
-const LoaderWrapper = styled.div`
+const LoaderWrapper = styled.tr`
     position: absolute;
     top: 50%;
     left: 50%;

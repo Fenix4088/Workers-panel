@@ -4,6 +4,7 @@ import styled from "styled-components/macro";
 
 type LoaderPropsT = {
     size: number
+    color?: string
 }
 
 export function Loader(props: LoaderPropsT) {
@@ -13,13 +14,13 @@ export function Loader(props: LoaderPropsT) {
     });
 
     return (
-        <LoaderWrapper {...containerProps} width={props.size}>
-            {indicatorEl} {/* renders only while loading */}
+        <LoaderWrapper {...containerProps} width={props.size} color={props.color ? props.color : ""}>
+            {indicatorEl}
         </LoaderWrapper>
     );
 }
 
-const LoaderWrapper = styled.section<{width: number}>`
+const LoaderWrapper = styled.section<{width: number, color: string}>`
     width: ${props => props.width + "px"};
     color: ${({theme}) => theme.color.primary.main};
 `;

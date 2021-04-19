@@ -6,7 +6,7 @@ import { setIsLoggedIn } from "../pages/Login/loginReducer";
 import { WorkersT } from "../pages/WorkersTable/workersTableReducer";
 import { toast } from "../helpers/helpers";
 
-type ActionsT = ReturnType<typeof isAuth> | ReturnType<typeof changeModalStatus> | ReturnType<typeof loading>;
+type ActionsT = ReturnType<typeof isAuth> | ReturnType<typeof changeModalStatus> | ReturnType<typeof appLoading>;
 
 export type ModalStatusT = {
     modalType?: "add" | "update";
@@ -79,7 +79,7 @@ const isAuth = (status: boolean) => {
     } as const;
 };
 
-export const loading = (status: boolean) => {
+export const appLoading = (status: boolean) => {
     return {
         type: reducerActions.APP_LOADING,
         status

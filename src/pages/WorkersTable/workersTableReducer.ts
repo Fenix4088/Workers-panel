@@ -3,7 +3,6 @@ import { MessageRespT, workersApi } from "../../api/api";
 import { AxiosResponse } from "axios";
 import { v1 } from "uuid";
 import { toast } from "../../helpers/helpers";
-import { loading } from "../../App/appReducer";
 
 // * Types
 
@@ -25,10 +24,13 @@ type ActionsT =
     | ReturnType<typeof deleteWorker>
     | ReturnType<typeof addWorker>
     | ReturnType<typeof updateWorker>
-    | ReturnType<typeof setFilteredWorkers>;
+    | ReturnType<typeof setFilteredWorkers>
+    | ReturnType<typeof tableLoading>;
 
 type InitialStateT = {
     workers: Array<WorkersT>;
+    isTableLoading: boolean;
+
 };
 
 // * Actions
@@ -43,16 +45,18 @@ const reducerActions = {
     DELETE_WORKER: "workersTableReducer/DELETE_WORKER" as const,
     ADD_WORKER: "workersTableReducer/ADD_WORKER" as const,
     UPDATE_WORKER: "workersTableReducer/UPDATE_WORKER" as const,
-    SET_FILTERED_WORKERS: "workersTableReducer/SET_FILTERED_WORKERS" as const
+    SET_FILTERED_WORKERS: "workersTableReducer/SET_FILTERED_WORKERS" as const,
+    TABLE_LOADING: "workersTableReducer/TABLE_LOADING" as const
 };
 
 // * reducer
 const initialState: InitialStateT = {
-    workers: [] as Array<WorkersT>
+    workers: [] as Array<WorkersT>,
+    isTableLoading: false,
 };
 
 export const workersTableReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER, SET_FILTERED_WORKERS } = reducerActions;
+    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER, SET_FILTERED_WORKERS, TABLE_LOADING } = reducerActions;
     switch (action.type) {
         case SET_WORKERS: {
             return {
@@ -87,12 +91,25 @@ export const workersTableReducer = (state = initialState, action: ActionsT): Ini
                 )
             };
         }
+        case TABLE_LOADING: {
+            return {
+                ...state,
+                isTableLoading: action.status
+            };
+        }
         default:
             return state;
     }
 };
 
 // * AC
+
+export const tableLoading = (status: boolean) => {
+    return {
+        type: reducerActions.TABLE_LOADING,
+        status
+    } as const;
+};
 
 const setWorkers = (payload: Array<WorkersT>) => {
     return {
@@ -140,15 +157,15 @@ export function* workersWatcher() {
 
 function* getWorkersWorker() {
     debugger;
-    yield put(loading(true));
+    yield put(tableLoading(true));
     try {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);
         yield put(setWorkers(workers));
-        yield put(loading(false));
+        yield put(tableLoading(false));
 
     } catch (err) {
         yield call(toast, "fail", err.message);
-        yield put(loading(false));
+        yield put(tableLoading(false));
 
     }
 }
