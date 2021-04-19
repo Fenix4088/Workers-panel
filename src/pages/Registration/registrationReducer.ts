@@ -1,6 +1,6 @@
 // * Types
 import { call, put, takeEvery } from "redux-saga/effects";
-import { authApi, RegisterRespT, RegistrationDataT } from "../../api/api";
+import {authApi, MessageRespT, RegistrationDataT} from "../../api/api";
 import { AxiosResponse } from "axios";
 import { toast } from "../../helpers/helpers";
 
@@ -52,7 +52,7 @@ export function* registrationWatcher() {
 
 function* registrationWorker(action: ReturnType<typeof registrationSA>) {
     try {
-        const res: AxiosResponse<RegisterRespT> = yield call(authApi.registration, action.payload);
+        const res: AxiosResponse<MessageRespT> = yield call(authApi.registration, action.payload);
         yield call(toast, "success", res.data.message);
         yield put(isRegistered(true));
     } catch (err) {

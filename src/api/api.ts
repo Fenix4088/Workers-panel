@@ -15,10 +15,7 @@ export type LoginDataT = RegistrationDataT & {
     rememberMe: boolean;
 };
 
-export type LogoutRespT = {
-    resultCode: number;
-    message: string;
-};
+
 
 export type LoginRespT = {
     data: {
@@ -35,30 +32,18 @@ export type AuthRespT = {
     };
 };
 
-export type RegisterRespT = {
-    resultCode: number;
-    message: string;
-};
+
 
 export type GetWorkersRespT = {
     count: number;
     workers: Array<WorkersT>;
 };
 
-export type DeleteWorkerRespT = {
+export type MessageRespT = {
     resultCode: number;
     message: string;
 };
 
-export type AddWorkerRespT = {
-    resultCode: number;
-    message: string;
-};
-
-export type UdateWorkerRespT = {
-    resultCode: number;
-    message: string;
-};
 
 export const authApi = {
     async me() {
@@ -66,7 +51,7 @@ export const authApi = {
     },
 
     async registration(data: RegistrationDataT) {
-        return await instance.post<AxiosResponse<RegisterRespT>>("auth/register", data);
+        return await instance.post<AxiosResponse<MessageRespT>>("auth/register", data);
     },
 
     async login(data: LoginDataT) {
@@ -74,7 +59,7 @@ export const authApi = {
     },
 
     async logout() {
-        return await instance.delete<AxiosResponse<LogoutRespT>>("auth/logout");
+        return await instance.delete<AxiosResponse<MessageRespT>>("auth/logout");
     }
 };
 
@@ -84,13 +69,13 @@ export const workersApi = {
         return res.data.data.workers;
     },
     async deleteWorker(id: string) {
-        return await instance.delete<AxiosResponse<DeleteWorkerRespT>>(`workers/${id}`);
+        return await instance.delete<AxiosResponse<MessageRespT>>(`workers/${id}`);
     },
     async addWorker(data: NewWorkerT) {
-        return await instance.post<AxiosResponse<AddWorkerRespT>>(`workers`, data);
+        return await instance.post<AxiosResponse<MessageRespT>>(`workers`, data);
     },
 
     async updateWorker(data: WorkersT) {
-        return await instance.put<AxiosResponse<UdateWorkerRespT>>(`workers/${data._id}`, data);
+        return await instance.put<AxiosResponse<MessageRespT>>(`workers/${data._id}`, data);
     }
 };

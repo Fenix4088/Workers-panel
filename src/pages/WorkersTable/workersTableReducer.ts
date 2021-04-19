@@ -1,9 +1,9 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import { AddWorkerRespT, DeleteWorkerRespT, UdateWorkerRespT, workersApi } from "../../api/api";
+import { MessageRespT, workersApi } from "../../api/api";
 import { AxiosResponse } from "axios";
 import { v1 } from "uuid";
-import Toast from "light-toast";
 import { toast } from "../../helpers/helpers";
+import { loading } from "../../App/appReducer";
 
 // * Types
 
@@ -139,11 +139,17 @@ export function* workersWatcher() {
 }
 
 function* getWorkersWorker() {
+    debugger;
+    yield put(loading(true));
     try {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);
         yield put(setWorkers(workers));
+        yield put(loading(false));
+
     } catch (err) {
         yield call(toast, "fail", err.message);
+        yield put(loading(false));
+
     }
 }
 
@@ -155,7 +161,7 @@ export const getWorkersSA = () => {
 
 function* deleteWorkerWorker(action: ReturnType<typeof deleteWorkersSA>) {
     try {
-        const resp: AxiosResponse<DeleteWorkerRespT> = yield call(workersApi.deleteWorker, action.id);
+        const resp: AxiosResponse<MessageRespT> = yield call(workersApi.deleteWorker, action.id);
         yield put(deleteWorker(action.id));
         yield call(toast, "success", resp.data.message);
     } catch (err) {
@@ -172,7 +178,7 @@ export const deleteWorkersSA = (id: string) => {
 
 function* addWorkerWorker(action: ReturnType<typeof addWorkersSA>) {
     try {
-        const resp: AxiosResponse<AddWorkerRespT> = yield call(workersApi.addWorker, action.payload);
+        const resp: AxiosResponse<MessageRespT> = yield call(workersApi.addWorker, action.payload);
         yield put(addWorker(action.payload));
         yield put(getWorkersSA());
         yield call(toast, "success", resp.data.message);
@@ -190,7 +196,7 @@ export const addWorkersSA = (payload: NewWorkerT) => {
 
 function* updateWorkerWorker(action: ReturnType<typeof updateWorkerSA>) {
     try {
-        const resp: AxiosResponse<UdateWorkerRespT> = yield call(workersApi.updateWorker, action.payload);
+        const resp: AxiosResponse<MessageRespT> = yield call(workersApi.updateWorker, action.payload);
         yield put(updateWorker(action.payload));
         yield call(toast, "success", resp.data.message);
     } catch (err) {

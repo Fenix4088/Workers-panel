@@ -1,10 +1,11 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { changeModalStatus } from "../../App/appReducer";
 import { deleteWorkersSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 import { formatDate } from "../../helpers/helpers";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import styled from "styled-components/macro";
+import {RootStateT} from "../../App/store/store";
 
 type TableMainRowPropsT = {
     workerData: WorkersT;

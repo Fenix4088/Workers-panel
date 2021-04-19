@@ -11,6 +11,7 @@ import { v1 } from "uuid";
 import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
 import { Search } from "../../components/Search/Search";
+import { Loader } from "../../components/common/Loader/Loader";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ export const WorkersTable = () => {
 
     const isLoggedIn = useSelector<RootStateT, boolean>((state) => state.login.isLoggedIn);
     const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
+    const isAppLoading = useSelector<RootStateT, boolean>((state) => state.app.isAppLoading);
 
     if (!isLoggedIn) {
         return <Redirect to={routes.login} />;
@@ -38,6 +40,9 @@ export const WorkersTable = () => {
 
     return (
         <MainTable>
+            {/*<LoaderWrapper>*/}
+            {/*    <Loader size={200}/>*/}
+            {/*</LoaderWrapper>*/}
             <TableTitle>Workers Table</TableTitle>
 
             <TablePanelWrap>
@@ -60,9 +65,15 @@ export const WorkersTable = () => {
                         </TableHeaderRow>
                     </thead>
                     <tbody>
-                        {workers.map((w, i) => {
-                            return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
-                        })}
+                        {isAppLoading ? (
+                            <LoaderWrapper>
+                                <Loader size={200} />
+                            </LoaderWrapper>
+                        ) : (
+                            workers.map((w, i) => {
+                                return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
+                            })
+                        )}
                     </tbody>
                 </Table>
                 {modalStatus.isVisible && <ModalWindow type={modalStatus.modalType} />}
@@ -104,4 +115,11 @@ const TableHeaderRow = styled.tr`
     & > th {
         padding: 20px;
     }
+`;
+
+const LoaderWrapper = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `;
