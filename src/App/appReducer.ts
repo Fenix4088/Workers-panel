@@ -4,6 +4,7 @@ import {AxiosResponse} from "axios";
 import {authApi, AuthRespT} from "../api/api";
 import {setIsLoggedIn} from "../pages/Login/loginReducer";
 import {WorkersT} from "../pages/WorkersTable/workersTableReducer";
+import {toast} from "../helpers/helpers";
 
 type ActionsT = ReturnType<typeof isAuth> | ReturnType<typeof changeModalStatus>;
 
@@ -86,8 +87,9 @@ export function* authWorker() {
         const res: AxiosResponse<AuthRespT> = yield call(authApi.me);
         yield put(isAuth(true));
         yield put(setIsLoggedIn(true));
+        yield call(toast, "success", `Welcome, ${res.data.data.email}`)
     } catch (err) {
-        console.log(err.message)
+        yield call(toast, "info", "Please login or create a new account!")
         yield put(isAuth(false));
     }
 

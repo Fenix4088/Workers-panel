@@ -2,6 +2,8 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { AddWorkerRespT, DeleteWorkerRespT, UdateWorkerRespT, workersApi } from "../../api/api";
 import { AxiosResponse } from "axios";
 import { v1 } from "uuid";
+import Toast from "light-toast";
+import { toast } from "../../helpers/helpers";
 
 // * Types
 
@@ -141,7 +143,7 @@ function* getWorkersWorker() {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);
         yield put(setWorkers(workers));
     } catch (err) {
-        console.log(err.message);
+        yield call(toast, "fail", err.message);
     }
 }
 
@@ -155,9 +157,9 @@ function* deleteWorkerWorker(action: ReturnType<typeof deleteWorkersSA>) {
     try {
         const resp: AxiosResponse<DeleteWorkerRespT> = yield call(workersApi.deleteWorker, action.id);
         yield put(deleteWorker(action.id));
-        console.log(resp.data.message);
+        yield call(toast, "success", resp.data.message);
     } catch (err) {
-        console.log(err.message);
+        yield call(toast, "fail", err.message);
     }
 }
 
@@ -173,9 +175,9 @@ function* addWorkerWorker(action: ReturnType<typeof addWorkersSA>) {
         const resp: AxiosResponse<AddWorkerRespT> = yield call(workersApi.addWorker, action.payload);
         yield put(addWorker(action.payload));
         yield put(getWorkersSA());
-        console.log(resp.data.message);
+        yield call(toast, "success", resp.data.message);
     } catch (err) {
-        console.log(err.response.data.message);
+        yield call(toast, "fail", err.response.data.message);
     }
 }
 
@@ -190,9 +192,9 @@ function* updateWorkerWorker(action: ReturnType<typeof updateWorkerSA>) {
     try {
         const resp: AxiosResponse<UdateWorkerRespT> = yield call(workersApi.updateWorker, action.payload);
         yield put(updateWorker(action.payload));
-        console.log(resp.data.message);
+        yield call(toast, "success", resp.data.message);
     } catch (err) {
-        console.log(err.message);
+        yield call(toast, "fail", err.message);
     }
 }
 

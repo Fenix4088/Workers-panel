@@ -1,7 +1,8 @@
 // * Types
-import {call, put, takeEvery } from "redux-saga/effects";
+import {call, put, takeEvery} from "redux-saga/effects";
 import {authApi, LoginDataT, LoginRespT, LogoutRespT} from "../../api/api";
 import {AxiosResponse} from "axios";
+import {toast} from "../../helpers/helpers";
 
 type ActionsT = ReturnType<typeof setIsLoggedIn>;
 
@@ -57,12 +58,10 @@ export function* loginWorker(action: ReturnType<typeof loginSA>) {
     try {
         const res: AxiosResponse<LoginRespT> = yield call(authApi.login, action.payload);
         yield put(setIsLoggedIn(true));
-        //TODO: Show message
-        console.log("Nice to see you !");
-    } catch(err) {
+        yield call(toast, "success", `Nice to see you, ${res.data.data.email}`)
+    } catch (err) {
         yield put(setIsLoggedIn(false));
-        //TODO: Show message
-        console.log(err.message);
+        yield call(toast, "fail", err.message)
     }
 }
 
@@ -74,12 +73,10 @@ export const loginSA = (payload: LoginDataT) => ({
 export function* logoutWorker() {
     try {
         const res: AxiosResponse<LogoutRespT> = yield call(authApi.logout);
-        //TODO: Show message
-        console.log(res.data.message);
         yield put(setIsLoggedIn(false));
-    } catch(err) {
-        //TODO: Show message
-        console.log(err.message);
+        yield call(toast, "success", res.data.message)
+    } catch (err) {
+        yield call(toast, "fail", err.message)
         yield put(setIsLoggedIn(true));
     }
 }
