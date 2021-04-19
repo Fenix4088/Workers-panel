@@ -1,11 +1,12 @@
 import React from "react";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeModalStatus } from "../../App/appReducer";
 import { deleteWorkersSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 import { formatDate } from "../../helpers/helpers";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import styled from "styled-components/macro";
-import {RootStateT} from "../../App/store/store";
+import { RootStateT } from "../../App/store/store";
+import { Loader } from "../common/Loader/Loader";
 
 type TableMainRowPropsT = {
     workerData: WorkersT;
@@ -33,10 +34,24 @@ export const TableMainRow: React.FC<TableMainRowPropsT> = ({ workerData, index, 
             <TableData>{workerData.salary}</TableData>
             <TableData>{workerData.position}</TableData>
             <TableDataUsePanel>
-                <WorkersPanelIcon icon={"delete"} width={"20"} onClick={deleteWorker} />
-                <WorkersPanelIcon icon={"update"} width={"20"} onClick={updateWorker} />
+                {workerData.isLoading ? (
+                    <TableDataLoader />
+                ) : (
+                    <>
+                        <WorkersPanelIcon icon={"delete"} width={"20"} onClick={deleteWorker} />
+                        <WorkersPanelIcon icon={"update"} width={"20"} onClick={updateWorker} />
+                    </>
+                )}
             </TableDataUsePanel>
         </TableBodyRow>
+    );
+};
+
+export const TableDataLoader = () => {
+    return (
+        <TableItemLoader>
+            <Loader size={25} color={"#dbb145"} />
+        </TableItemLoader>
     );
 };
 
@@ -57,6 +72,7 @@ const TableData = styled.td`
 `;
 
 const TableDataUsePanel = styled.td`
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,4 +85,10 @@ const TableDataUsePanel = styled.td`
             margin-right: 0;
         }
     }
+`;
+
+const TableItemLoader = styled.div`
+    position: absolute;
+    top: 50%;
+    transform: translateY(-10%);
 `;

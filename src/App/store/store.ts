@@ -5,6 +5,7 @@ import { registrationReducer, registrationWatcher } from "../../pages/Registrati
 import { workersTableReducer, workersWatcher } from "../../pages/WorkersTable/workersTableReducer";
 import { all } from "redux-saga/effects";
 import { appReducer, appWatcher } from "../appReducer";
+import {composeWithDevTools} from "redux-devtools-extension";
 
 export type RootStateT = ReturnType<typeof rootReducer>;
 
@@ -17,10 +18,11 @@ const rootReducer = combineReducers({
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootWatcher);
 
 function* rootWatcher() {
     yield all([loginWatcher(), appWatcher(), registrationWatcher(), workersWatcher()]);
 }
+

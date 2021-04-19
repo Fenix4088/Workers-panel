@@ -26,7 +26,8 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
             contacts: "",
             gender: "male",
             salary: "",
-            position: ""
+            position: "",
+            isLoading: false
         };
     } else {
         initialWorkerData = {
@@ -34,7 +35,8 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
             contacts: updatingWorker.contacts,
             gender: updatingWorker.gender,
             salary: updatingWorker.salary,
-            position: updatingWorker.position
+            position: updatingWorker.position,
+            isLoading: false
         };
     }
 

@@ -17,6 +17,7 @@ export type NewWorkerT = {
 export type WorkersT = NewWorkerT & {
     _id?: string;
     updated?: string;
+    isLoading: boolean;
 };
 
 type ActionsT =
@@ -25,12 +26,12 @@ type ActionsT =
     | ReturnType<typeof addWorker>
     | ReturnType<typeof updateWorker>
     | ReturnType<typeof setFilteredWorkers>
-    | ReturnType<typeof tableLoading>;
+    | ReturnType<typeof tableLoading>
+    | ReturnType<typeof workerLoading>;
 
 type InitialStateT = {
     workers: Array<WorkersT>;
     isTableLoading: boolean;
-
 };
 
 // * Actions
@@ -46,22 +47,31 @@ const reducerActions = {
     ADD_WORKER: "workersTableReducer/ADD_WORKER" as const,
     UPDATE_WORKER: "workersTableReducer/UPDATE_WORKER" as const,
     SET_FILTERED_WORKERS: "workersTableReducer/SET_FILTERED_WORKERS" as const,
-    TABLE_LOADING: "workersTableReducer/TABLE_LOADING" as const
+    TABLE_LOADING: "workersTableReducer/TABLE_LOADING" as const,
+    WORKER_LOADING: "workersTableReducer/WORKER_LOADING" as const
 };
 
 // * reducer
 const initialState: InitialStateT = {
     workers: [] as Array<WorkersT>,
-    isTableLoading: false,
+    isTableLoading: false
 };
 
 export const workersTableReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const { SET_WORKERS, DELETE_WORKER, ADD_WORKER, UPDATE_WORKER, SET_FILTERED_WORKERS, TABLE_LOADING } = reducerActions;
+    const {
+        SET_WORKERS,
+        DELETE_WORKER,
+        ADD_WORKER,
+        UPDATE_WORKER,
+        SET_FILTERED_WORKERS,
+        TABLE_LOADING,
+        WORKER_LOADING
+    } = reducerActions;
     switch (action.type) {
         case SET_WORKERS: {
             return {
                 ...state,
-                workers: action.payload
+                workers: action.payload.map((w) => ({ ...w, isLoading: false }))
             };
         }
         case SET_FILTERED_WORKERS: {
@@ -73,7 +83,7 @@ export const workersTableReducer = (state = initialState, action: ActionsT): Ini
         case ADD_WORKER: {
             return {
                 ...state,
-                workers: [...state.workers, { ...action.workerData }]
+                workers: [...state.workers, { ...action.workerData, isLoading: false }]
             };
         }
         case DELETE_WORKER: {
@@ -97,6 +107,12 @@ export const workersTableReducer = (state = initialState, action: ActionsT): Ini
                 isTableLoading: action.status
             };
         }
+        case WORKER_LOADING: {
+            return {
+                ...state,
+                workers: state.workers.map((w) => (w._id === action.workerId ? { ...w, isLoading: action.status } : w))
+            };
+        }
         default:
             return state;
     }
@@ -108,6 +124,14 @@ export const tableLoading = (status: boolean) => {
     return {
         type: reducerActions.TABLE_LOADING,
         status
+    } as const;
+};
+
+export const workerLoading = (status: boolean, workerId: string) => {
+    return {
+        type: reducerActions.WORKER_LOADING,
+        status,
+        workerId
     } as const;
 };
 
@@ -162,11 +186,9 @@ function* getWorkersWorker() {
         const workers: Array<WorkersT> = yield call(workersApi.getWorkers);
         yield put(setWorkers(workers));
         yield put(tableLoading(false));
-
     } catch (err) {
         yield call(toast, "fail", err.message);
         yield put(tableLoading(false));
-
     }
 }
 
@@ -178,10 +200,12 @@ export const getWorkersSA = () => {
 
 function* deleteWorkerWorker(action: ReturnType<typeof deleteWorkersSA>) {
     try {
+        yield put(workerLoading(true, action.id));
         const resp: AxiosResponse<MessageRespT> = yield call(workersApi.deleteWorker, action.id);
         yield put(deleteWorker(action.id));
         yield call(toast, "success", resp.data.message);
     } catch (err) {
+        yield put(workerLoading(false, action.id));
         yield call(toast, "fail", err.message);
     }
 }
@@ -213,10 +237,12 @@ export const addWorkersSA = (payload: NewWorkerT) => {
 
 function* updateWorkerWorker(action: ReturnType<typeof updateWorkerSA>) {
     try {
+        if(action.payload._id) yield put(workerLoading(true, action.payload._id));
         const resp: AxiosResponse<MessageRespT> = yield call(workersApi.updateWorker, action.payload);
         yield put(updateWorker(action.payload));
         yield call(toast, "success", resp.data.message);
     } catch (err) {
+        if(action.payload._id) yield put(workerLoading(false, action.payload._id));
         yield call(toast, "fail", err.message);
     }
 }

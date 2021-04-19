@@ -14,7 +14,7 @@ export function Loader(props: LoaderPropsT) {
     });
 
     return (
-        <LoaderWrapper {...containerProps} width={props.size} color={props.color ? props.color : ""}>
+        <LoaderWrapper {...containerProps} width={props.size} color={props.color ? props.color : "#4579db"}>
             {indicatorEl}
         </LoaderWrapper>
     );
@@ -22,5 +22,5 @@ export function Loader(props: LoaderPropsT) {
 
 const LoaderWrapper = styled.section<{width: number, color: string}>`
     width: ${props => props.width + "px"};
-    color: ${({theme}) => theme.color.primary.main};
+    color: ${props => props.color};
 `;
