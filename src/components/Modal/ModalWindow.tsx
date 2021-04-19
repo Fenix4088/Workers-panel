@@ -124,12 +124,13 @@ const ModalForm = styled.form`
     padding: 20px;
     width: 20%;
     min-width: 200px;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: 1px solid red;
     background-color: ${({ theme }) => theme.color.secondary.light};
+    z-index: 300
 `;
 
 const RadioWrap = styled.div`
