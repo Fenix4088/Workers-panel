@@ -20,19 +20,17 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
     const updatingWorker = useSelector<RootStateT, WorkersT>((state) => state.app.modalStatus.optionalData);
 
     useEffect(() => {
+        const documentClickHandler = (e: any) => {
+            const modalForm = document.querySelector("[data-form]");
+            if (!e.path.includes(modalForm)) {
+                dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));
+            }
+        };
         document.addEventListener("click", documentClickHandler);
         return () => {
             document.removeEventListener("click", documentClickHandler);
         };
-    }, []);
-
-    const documentClickHandler = (e: MouseEvent) => {
-        const modalForm = document.querySelector("[data-form]");
-        //@ts-ignore
-        if (!e.path.includes(modalForm)) {
-            dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));
-        }
-    };
+    }, [dispatch]);
 
     let initialWorkerData: WorkersT;
 
