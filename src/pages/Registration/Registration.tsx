@@ -10,6 +10,7 @@ import { Redirect } from "react-router-dom";
 import { routes } from "../../App/routes/routes";
 import { registrationSA } from "./registrationReducer";
 import { MB } from "../../styles/GlobalStyles";
+import { FormTitle } from "../Login/Login";
 
 export type RegistrationFormT = {
     email: string;
@@ -67,7 +68,7 @@ export const Registration = () => {
             <>
                 <div>
                     <StyledForm onSubmit={formik.handleSubmit}>
-                        <span>Sing up</span>
+                        <FormTitle>Sing up</FormTitle>
 
                         <MB margin={"20px"}>
                             <InputText
@@ -123,7 +124,8 @@ const StyledForm = styled.form`
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    border: 1px solid red;
+    background-color: ${({ theme }) => theme.color.secondary.light};
+    box-shadow: ${({ theme }) => theme.shadow[3]};
 `;
 
 const Overlay = styled.div`

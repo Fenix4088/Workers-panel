@@ -64,7 +64,7 @@ export const WorkersTable = () => {
                     </thead>
                     <tbody>
                         {isTableLoading ? (
-                            <TableLoader/>
+                            <TableLoader />
                         ) : (
                             workers.map((w, i) => {
                                 return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
@@ -78,8 +78,6 @@ export const WorkersTable = () => {
     );
 };
 
-
-
 const MainTable = styled.div``;
 
 const TableWrapper = styled.div`
@@ -87,10 +85,11 @@ const TableWrapper = styled.div`
 `;
 
 const Table = styled.table`
-    width: 100%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    border: 1px solid black;
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  box-shadow: ${({theme}) => theme.shadow[5]};
+  border: 1px solid rgba(146, 141, 141, 0.7);
 `;
 
 const TablePanelWrap = styled.div`
@@ -114,5 +113,3 @@ const TableHeaderRow = styled.tr`
         padding: 20px;
     }
 `;
-
-

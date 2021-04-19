@@ -20,7 +20,7 @@ const StyledButton = styled.button<StyledComponentProps<any, ThemeType, any, any
 
   font-family: ${({ theme }) => theme.font.family.default}; // Make a default font actually default
   font-size: ${({ theme }) => theme.font.size.default}; // Default font size
-
+  box-shadow: ${({ theme }) => theme.shadow[3]};
   &:hover {
     background-color: ${({ theme }) => theme.color.primary.light};
   }

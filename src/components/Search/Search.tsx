@@ -25,10 +25,12 @@ export const Search = () => {
 
     return (
         <SearchWrap>
-            <SearchIconWrap>
-                <WorkersPanelIcon icon={"search"} width={"20"} />
-            </SearchIconWrap>
-            <InputText value={searchVal} type={"search"} placeholder={"Search by name..."} onInput={searchWorkers} />
+            <SearchInputWrap>
+                <SearchIconWrap>
+                    <WorkersPanelIcon icon={"search"} width={"20"} />
+                </SearchIconWrap>
+                <InputText value={searchVal} type={"search"} placeholder={"Search by name..."} onInput={searchWorkers} />
+            </SearchInputWrap>
         </SearchWrap>
     );
 };
@@ -44,6 +46,11 @@ const SearchIconWrap = styled.div`
     right: 2%;
     transform: translateY(-50%);
     z-index: 100;
+`;
+
+const SearchInputWrap = styled.div`
+  position: relative;
+    min-width: 200px;
 `;
 
 

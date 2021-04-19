@@ -69,7 +69,7 @@ export const Login = () => {
                     {/*        <span>Loading...</span>*/}
                     {/*    </Overlay>*/}
                     {/*)}*/}
-                    <span>Sing in</span>
+                    <FormTitle>Login</FormTitle>
 
                     <MB margin={"20px"}>
                         <InputText
@@ -118,7 +118,13 @@ const FormStyle = styled.form`
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    border: 1px solid red;
+    background-color: ${({ theme }) => theme.color.secondary.light};
+    box-shadow: ${({ theme }) => theme.shadow[3]};
+
+`;
+
+export const FormTitle = styled.h3`
+    margin-bottom: 20px;
 `;
 
 const Overlay = styled.div`

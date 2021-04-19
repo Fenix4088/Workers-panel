@@ -63,8 +63,11 @@ export const MB = styled.div<any>`
 `
 
 export const AppContainer = styled.div`
-  border: 2px solid red;
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px;
+  
+  @media(max-width: ${({theme}) => theme.mediaQuery.tablet}) {
+    padding: 10px;
+  }
 `;

@@ -66,7 +66,7 @@ const StyledInput = styled.input<StyledComponentProps<any, any, any, any>>`
 
     font-size: ${({ theme }) => theme.font.size.default};
     font-family: ${({ theme }) => theme.font.family.default};
-
+  box-shadow: ${({ theme }) => theme.shadow[3]};
     border: 1px solid rgb(109, 109, 109);
 `;
 // Стили контейнера с ошибкой
