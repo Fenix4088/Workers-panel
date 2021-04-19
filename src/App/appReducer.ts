@@ -99,14 +99,17 @@ export function* appWatcher() {
 }
 
 export function* authWorker() {
+    yield put(appLoading(true));
     try {
         const res: AxiosResponse<AuthRespT> = yield call(authApi.me);
         yield put(isAuth(true));
         yield put(setIsLoggedIn(true));
+        yield put(appLoading(false));
         yield call(toast, "success", `Welcome, ${res.data.data.email}`);
     } catch (err) {
         yield call(toast, "info", "Please login or create a new account!");
         yield put(isAuth(false));
+        yield put(appLoading(false));
     }
 }
 
