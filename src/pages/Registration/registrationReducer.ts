@@ -6,7 +6,7 @@ import { toast } from "../../helpers/helpers";
 
 type ActionsT = ReturnType<typeof isRegistered>;
 
-type InitialStateT = {
+export type InitialStateT = {
     isRegistered: boolean;
 };
 
@@ -38,7 +38,7 @@ export const registrationReducer = (state = initialState, action: ActionsT): Ini
 };
 
 // * AC
-const isRegistered = (status: boolean) => {
+export const isRegistered = (status: boolean) => {
     return {
         type: reducerActions.REGISTERED_STATUS,
         status
