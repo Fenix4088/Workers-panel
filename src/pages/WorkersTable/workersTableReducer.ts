@@ -29,7 +29,7 @@ type ActionsT =
     | ReturnType<typeof tableLoading>
     | ReturnType<typeof workerLoading>;
 
-type InitialStateT = {
+export type InitialStateT = {
     workers: Array<WorkersT>;
     isTableLoading: boolean;
 };
@@ -135,14 +135,14 @@ export const workerLoading = (status: boolean, workerId: string) => {
     } as const;
 };
 
-const setWorkers = (payload: Array<WorkersT>) => {
+export const setWorkers = (payload: Array<WorkersT>) => {
     return {
         type: reducerActions.SET_WORKERS,
         payload
     } as const;
 };
 
-const addWorker = (workerData: NewWorkerT) => {
+export const addWorker = (workerData: NewWorkerT) => {
     return {
         type: reducerActions.ADD_WORKER,
         id: v1(),
@@ -150,7 +150,7 @@ const addWorker = (workerData: NewWorkerT) => {
     } as const;
 };
 
-const deleteWorker = (id: string) => {
+export const deleteWorker = (id: string) => {
     return {
         type: reducerActions.DELETE_WORKER,
         id
