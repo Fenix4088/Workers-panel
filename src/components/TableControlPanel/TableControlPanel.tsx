@@ -1,15 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { changeModalStatus, setCurrentUsersIndexes, setPageData } from "../../App/appReducer";
-import { getWorkersSA, setWorkers, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
+import { WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import { Search } from "../Search/Search";
 import { Select } from "../common/Select/Select";
 import styled from "styled-components/macro";
 import { RootStateT } from "../../App/store/store";
-import { calcPagination, getTotalPagesList } from "../../helpers/helpers";
-import { Button } from "../common/Button/Button";
-import { v1 } from "uuid";
+import { getTotalPagesList } from "../../helpers/helpers";
+import { Paginator } from "../Paginator/Paginator";
 
 type SelectValT = "5" | "10" | "25" | "all";
 
@@ -35,7 +34,7 @@ export const TableControlPanel = () => {
             dispatch(setCurrentUsersIndexes([0, +value]));
         } else {
             dispatch(setCurrentUsersIndexes([0]));
-            dispatch(setPageData([0], 0));
+            dispatch(setPageData([1], workers.length));
         }
     };
 
@@ -49,33 +48,6 @@ export const TableControlPanel = () => {
     );
 };
 
-export const Paginator = () => {
-    const dispatch = useDispatch();
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const pagesList = useSelector<RootStateT, Array<number>>((state) => state.app.paginatorData.totalPageCount);
-    const usersPerPage = useSelector<RootStateT, number>((state) => state.app.paginatorData.usersPerPage);
-
-    const onPagButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setCurrentPage(+e.currentTarget.value);
-
-        const currentPage = +e.currentTarget.value;
-
-        const lastIndex = usersPerPage * currentPage;
-        const firstIndex = lastIndex - usersPerPage;
-        dispatch(setCurrentUsersIndexes([firstIndex, lastIndex]));
-    };
-
-    return (
-        <PaginatorWrap>
-            {calcPagination(pagesList, currentPage).map((p) => (
-                <Button key={v1()} onClick={onPagButtonClick} value={p}>
-                    {p}
-                </Button>
-            ))}
-        </PaginatorWrap>
-    );
-};
-
 const TablePanelWrap = styled.div`
     margin-bottom: 20px;
     display: flex;
@@ -86,12 +58,3 @@ const TablePanelWrap = styled.div`
     }
 `;
 
-const PaginatorWrap = styled.div`
-    & > button {
-        margin-right: 5px;
-
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-`;
