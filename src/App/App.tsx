@@ -3,23 +3,28 @@ import "./App.css";
 import { Header } from "../components/Header/Header";
 import { Main } from "../components/Main/Main";
 import { useDispatch, useSelector } from "react-redux";
-import { authSA } from "./appReducer";
+import {authSA, changeModalStatus} from "./appReducer";
 import { AppContainer } from "../styles/GlobalStyles";
 import { RootStateT } from "./store/store";
 import { Loader } from "../components/common/Loader/Loader";
 import styled from "styled-components/macro";
+import {WorkersT} from "../pages/WorkersTable/workersTableReducer";
 
 function App() {
     const dispatch = useDispatch();
     const isAppLoading = useSelector<RootStateT, boolean>((state) => state.app.isAppLoading);
+
     const isModalOpen = useSelector<RootStateT, boolean>((state) => state.app.modalStatus.isVisible);
     useEffect(() => {
         dispatch(authSA());
     }, [dispatch]);
 
+    const onOverlayClick = () => {dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }))
+    }
+
     return (
         <>
-            {isModalOpen && <Overlay />}
+            {isModalOpen && <Overlay onClick={onOverlayClick}/>}
             {isAppLoading ? (
                 <BigLoaderWrap>
                     <Loader size={250} />

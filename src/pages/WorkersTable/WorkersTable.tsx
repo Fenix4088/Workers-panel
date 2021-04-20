@@ -11,7 +11,6 @@ import { v1 } from "uuid";
 import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
 import { Search } from "../../components/Search/Search";
-import { Loader } from "../../components/common/Loader/Loader";
 import { TableLoader } from "../../components/common/Loader/Loaders";
 
 export const WorkersTable = () => {
