@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/Workers-panel/static/css/main.bab0b925.chunk.css",
-    "main.js": "/Workers-panel/static/js/main.03e3624d.chunk.js",
-    "main.js.map": "/Workers-panel/static/js/main.03e3624d.chunk.js.map",
+    "main.js": "/Workers-panel/static/js/main.eab3db36.chunk.js",
+    "main.js.map": "/Workers-panel/static/js/main.eab3db36.chunk.js.map",
     "runtime-main.js": "/Workers-panel/static/js/runtime-main.0b967f32.js",
     "runtime-main.js.map": "/Workers-panel/static/js/runtime-main.0b967f32.js.map",
-    "static/js/2.f1d7a380.chunk.js": "/Workers-panel/static/js/2.f1d7a380.chunk.js",
-    "static/js/2.f1d7a380.chunk.js.map": "/Workers-panel/static/js/2.f1d7a380.chunk.js.map",
+    "static/js/2.84609259.chunk.js": "/Workers-panel/static/js/2.84609259.chunk.js",
+    "static/js/2.84609259.chunk.js.map": "/Workers-panel/static/js/2.84609259.chunk.js.map",
     "static/js/3.fa91c007.chunk.js": "/Workers-panel/static/js/3.fa91c007.chunk.js",
     "static/js/3.fa91c007.chunk.js.map": "/Workers-panel/static/js/3.fa91c007.chunk.js.map",
     "index.html": "/Workers-panel/index.html",
     "static/css/main.bab0b925.chunk.css.map": "/Workers-panel/static/css/main.bab0b925.chunk.css.map",
-    "static/js/2.f1d7a380.chunk.js.LICENSE.txt": "/Workers-panel/static/js/2.f1d7a380.chunk.js.LICENSE.txt"
+    "static/js/2.84609259.chunk.js.LICENSE.txt": "/Workers-panel/static/js/2.84609259.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.0b967f32.js",
-    "static/js/2.f1d7a380.chunk.js",
+    "static/js/2.84609259.chunk.js",
     "static/css/main.bab0b925.chunk.css",
-    "static/js/main.03e3624d.chunk.js"
+    "static/js/main.eab3db36.chunk.js"
   ]
 }
