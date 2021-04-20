@@ -22,7 +22,8 @@ export const WorkersTable = () => {
     }, [dispatch]);
 
     const isLoggedIn = useSelector<RootStateT, boolean>((state) => state.login.isLoggedIn);
-    const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
+    const [fI, lI] = useSelector<RootStateT, Array<number>>((state) => state.app.paginatorData.currentUsersIndexes);
+    const currentWorkers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers.slice(fI, lI));
     const isTableLoading = useSelector<RootStateT, boolean>((state) => state.workers.isTableLoading);
 
     if (!isLoggedIn) {
@@ -51,7 +52,7 @@ export const WorkersTable = () => {
                         {isTableLoading ? (
                             <TableLoader />
                         ) : (
-                            workers.map((w, i) => {
+                            currentWorkers.map((w, i) => {
                                 return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
                             })
                         )}

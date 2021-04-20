@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, {useEffect, useState} from "react";
-import { changeModalStatus, setPageData } from "../../App/appReducer";
-import {getWorkersSA, setWorkers, WorkersT} from "../../pages/WorkersTable/workersTableReducer";
+import React, { useEffect, useState } from "react";
+import { changeModalStatus, setCurrentUsersIndexes, setPageData } from "../../App/appReducer";
+import { getWorkersSA, setWorkers, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import { Search } from "../Search/Search";
 import { Select } from "../common/Select/Select";
@@ -29,10 +29,14 @@ export const TableControlPanel = () => {
 
     const onSelectChange = (value: SelectValT) => {
         setSelectedVal(value);
-
-        const pagesList = getTotalPagesList(value, workers.length, dispatch);
-
-        dispatch(setPageData(pagesList, +value));
+        if (value !== "all") {
+            const pagesList = getTotalPagesList(value, workers.length, dispatch);
+            dispatch(setPageData(pagesList, +value));
+            dispatch(setCurrentUsersIndexes([0, +value]));
+        } else {
+            dispatch(setCurrentUsersIndexes([0]));
+            dispatch(setPageData([0], 0));
+        }
     };
 
     return (
@@ -50,8 +54,6 @@ export const Paginator = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pagesList = useSelector<RootStateT, Array<number>>((state) => state.app.paginatorData.totalPageCount);
     const usersPerPage = useSelector<RootStateT, number>((state) => state.app.paginatorData.usersPerPage);
-    const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
-
 
     const onPagButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setCurrentPage(+e.currentTarget.value);
@@ -60,42 +62,36 @@ export const Paginator = () => {
 
         const lastIndex = usersPerPage * currentPage;
         const firstIndex = lastIndex - usersPerPage;
-        const workersForCurrentPage = workers.slice(firstIndex, lastIndex);
-
-
-
+        dispatch(setCurrentUsersIndexes([firstIndex, lastIndex]));
     };
-
-
 
     return (
         <PaginatorWrap>
-            {
-                calcPagination(pagesList, currentPage).map((p) => (
-                    <Button key={v1()} onClick={onPagButtonClick} value={p}>
-                        {p}
-                    </Button>
-                ))}
+            {calcPagination(pagesList, currentPage).map((p) => (
+                <Button key={v1()} onClick={onPagButtonClick} value={p}>
+                    {p}
+                </Button>
+            ))}
         </PaginatorWrap>
     );
 };
 
 const TablePanelWrap = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
 
-  & > * {
-    margin-right: 20px;
-  }
+    & > * {
+        margin-right: 20px;
+    }
 `;
 
 const PaginatorWrap = styled.div`
-  & > button {
-    margin-right: 5px;
+    & > button {
+        margin-right: 5px;
 
-    &:last-child {
-      margin-right: 0;
+        &:last-child {
+            margin-right: 0;
+        }
     }
-  }
 `;

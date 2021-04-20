@@ -11,7 +11,7 @@ type ActionsT =
     | ReturnType<typeof changeModalStatus>
     | ReturnType<typeof appLoading>
     | ReturnType<typeof setUserData>
-    | ReturnType<typeof setPageData>;
+    | ReturnType<typeof setPageData>| ReturnType<typeof setCurrentUsersIndexes>;
 
 export type ModalStatusT = {
     modalType?: "add" | "update";
@@ -26,7 +26,8 @@ export type AuthUserDataT = {
 
 export type PaginatorDataT = {
     totalPageCount: Array<number>,
-    usersPerPage: number
+    usersPerPage: number,
+    currentUsersIndexes: Array<number>
 }
 
 export type InitialStateT = {
@@ -48,6 +49,7 @@ const reducerActions = {
     APP_LOADING: "appReducer/APP_LOADING" as const,
     SET_USER_DATA: "appReducer/SET_USER_DATA" as const,
     SET_TOTAL_PAGE_COUNT: "appReducer/SET_TOTAL_PAGE_COUNT" as const,
+    SET_CURRENT_USER_INDEXES: "appReducer/SET_CURRENT_USER_INDEXES" as const,
 };
 
 // * Reducer
@@ -65,12 +67,13 @@ const initialState: InitialStateT = {
     },
     paginatorData: {
         totalPageCount: [0],
-        usersPerPage: 0
+        usersPerPage: 0,
+        currentUsersIndexes: [0]
     }
 };
 
 export const appReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const {AUTH, MODAL_STATUS, APP_LOADING, SET_USER_DATA, SET_TOTAL_PAGE_COUNT} = reducerActions;
+    const {AUTH, MODAL_STATUS, APP_LOADING, SET_USER_DATA, SET_TOTAL_PAGE_COUNT, SET_CURRENT_USER_INDEXES} = reducerActions;
 
     switch (action.type) {
         case AUTH: {
@@ -104,12 +107,26 @@ export const appReducer = (state = initialState, action: ActionsT): InitialState
                 paginatorData: {...state.paginatorData, totalPageCount: action.pagesList, usersPerPage: action.usersPerPage}
             };
         }
+        case SET_CURRENT_USER_INDEXES: {
+            return {
+                ...state,
+                paginatorData: {...state.paginatorData, currentUsersIndexes: action.indexes}
+            };
+        }
         default:
             return state;
     }
 };
 
 // * AC
+
+export const setCurrentUsersIndexes = (indexes: Array<number>) => {
+    return {
+        type: reducerActions.SET_CURRENT_USER_INDEXES,
+        indexes
+    } as const;
+};
+
 export const isAuth = (status: boolean) => {
     return {
         type: reducerActions.AUTH,
