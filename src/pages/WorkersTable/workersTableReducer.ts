@@ -236,12 +236,12 @@ export const addWorkersSA = (payload: NewWorkerT) => {
 
 function* updateWorkerWorker(action: ReturnType<typeof updateWorkerSA>) {
     try {
-        if(action.payload._id) yield put(workerLoading(true, action.payload._id));
+        if (action.payload._id) yield put(workerLoading(true, action.payload._id));
         const resp: AxiosResponse<MessageRespT> = yield call(workersApi.updateWorker, action.payload);
         yield put(updateWorker(action.payload));
         yield call(toast, "success", resp.data.message);
     } catch (err) {
-        if(action.payload._id) yield put(workerLoading(false, action.payload._id));
+        if (action.payload._id) yield put(workerLoading(false, action.payload._id));
         yield call(toast, "fail", err.message);
     }
 }

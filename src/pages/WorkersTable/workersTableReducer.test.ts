@@ -1,8 +1,11 @@
 import {
-    addWorker, deleteWorker,
-    InitialStateT, NewWorkerT,
+    addWorker,
+    deleteWorker,
+    InitialStateT,
+    NewWorkerT,
     setWorkers,
-    tableLoading, updateWorker,
+    tableLoading,
+    updateWorker,
     workerLoading,
     WorkersT,
     workersTableReducer
@@ -113,7 +116,7 @@ test("should add worker correctly", () => {
         gender: "female",
         contacts: "23343355",
         salary: "7100",
-        position: "seniorita",
+        position: "seniorita"
     };
 
     const endState = workersTableReducer(startState, addWorker(newWorker));
@@ -124,13 +127,11 @@ test("should add worker correctly", () => {
 });
 
 test("should delete worker correctly", () => {
-
-
     const endState = workersTableReducer(startState, deleteWorker("607af5ec74250300043ae461"));
 
     expect(startState.workers.length === 3).toBeTruthy();
     expect(endState.workers.length === 2).toBeTruthy();
-    expect(endState.workers.every(w => w._id !== "607af5ec74250300043ae461")).toBeTruthy();
+    expect(endState.workers.every((w) => w._id !== "607af5ec74250300043ae461")).toBeTruthy();
 });
 
 test("should update worker correctly", () => {
@@ -143,7 +144,7 @@ test("should update worker correctly", () => {
         position: "senior",
         updated: "2021-04-20T06:42:20.578Z",
         isLoading: false
-    }
+    };
 
     const endState = workersTableReducer(startState, updateWorker(newWorkerData));
 
