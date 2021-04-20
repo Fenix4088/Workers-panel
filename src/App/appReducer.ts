@@ -11,7 +11,7 @@ type ActionsT =
     | ReturnType<typeof changeModalStatus>
     | ReturnType<typeof appLoading>
     | ReturnType<typeof setUserData>
-    | ReturnType<typeof setTotalPadeCount>;
+    | ReturnType<typeof setPageData>;
 
 export type ModalStatusT = {
     modalType?: "add" | "update";
@@ -26,7 +26,7 @@ export type AuthUserDataT = {
 
 export type PaginatorDataT = {
     totalPageCount: Array<number>,
-    currentPage: number
+    usersPerPage: number
 }
 
 export type InitialStateT = {
@@ -65,7 +65,7 @@ const initialState: InitialStateT = {
     },
     paginatorData: {
         totalPageCount: [0],
-        currentPage: 0
+        usersPerPage: 0
     }
 };
 
@@ -101,7 +101,7 @@ export const appReducer = (state = initialState, action: ActionsT): InitialState
         case SET_TOTAL_PAGE_COUNT: {
             return {
                 ...state,
-                paginatorData: {...state.paginatorData, totalPageCount: action.pages}
+                paginatorData: {...state.paginatorData, totalPageCount: action.pagesList, usersPerPage: action.usersPerPage}
             };
         }
         default:
@@ -138,10 +138,11 @@ export const setUserData = (userData: AuthUserDataT) => {
     } as const;
 };
 
-export const setTotalPadeCount = (pages: Array<number>) => {
+export const setPageData = (pagesList: Array<number>, usersPerPage: number) => {
     return {
         type: reducerActions.SET_TOTAL_PAGE_COUNT,
-        pages
+        pagesList,
+        usersPerPage
     } as const;
 };
 

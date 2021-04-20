@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import React, { useState } from "react";
-import { changeModalStatus, setTotalPadeCount } from "../../App/appReducer";
-import { getWorkersSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
+import React, {useEffect, useState} from "react";
+import { changeModalStatus, setPageData } from "../../App/appReducer";
+import {getWorkersSA, setWorkers, WorkersT} from "../../pages/WorkersTable/workersTableReducer";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import { Search } from "../Search/Search";
 import { Select } from "../common/Select/Select";
 import styled from "styled-components/macro";
 import { RootStateT } from "../../App/store/store";
-import {calcPagination, getTotalPagesList} from "../../helpers/helpers";
+import { calcPagination, getTotalPagesList } from "../../helpers/helpers";
 import { Button } from "../common/Button/Button";
 import { v1 } from "uuid";
 
@@ -32,7 +32,7 @@ export const TableControlPanel = () => {
 
         const pagesList = getTotalPagesList(value, workers.length, dispatch);
 
-        dispatch(setTotalPadeCount(pagesList));
+        dispatch(setPageData(pagesList, +value));
     };
 
     return (
@@ -46,11 +46,24 @@ export const TableControlPanel = () => {
 };
 
 export const Paginator = () => {
+    const dispatch = useDispatch();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const pagesList = useSelector<RootStateT, Array<number>>((state) => state.app.paginatorData.totalPageCount);
+    const usersPerPage = useSelector<RootStateT, number>((state) => state.app.paginatorData.usersPerPage);
+    const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
+
 
     const onPagButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setCurrentPage(+e.currentTarget.value);
+
+        const currentPage = +e.currentTarget.value;
+
+        const lastIndex = usersPerPage * currentPage;
+        const firstIndex = lastIndex - usersPerPage;
+        const workersForCurrentPage = workers.slice(firstIndex, lastIndex);
+
+
+
     };
 
 
@@ -58,7 +71,7 @@ export const Paginator = () => {
     return (
         <PaginatorWrap>
             {
-            calcPagination(pagesList, currentPage).map((p) => (
+                calcPagination(pagesList, currentPage).map((p) => (
                     <Button key={v1()} onClick={onPagButtonClick} value={p}>
                         {p}
                     </Button>
@@ -68,21 +81,21 @@ export const Paginator = () => {
 };
 
 const TablePanelWrap = styled.div`
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 
-    & > * {
-        margin-right: 20px;
-    }
+  & > * {
+    margin-right: 20px;
+  }
 `;
 
 const PaginatorWrap = styled.div`
-    & > button {
-        margin-right: 5px;
+  & > button {
+    margin-right: 5px;
 
-        &:last-child {
-            margin-right: 0;
-        }
+    &:last-child {
+      margin-right: 0;
     }
+  }
 `;
