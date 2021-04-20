@@ -8,7 +8,7 @@ type PropsType = DefaultRadioPropsType & {
     onChangeOption?: (option: any) => void;
 };
 
-export const RadioButtons: React.FC<PropsType> = ({
+export const RadioButtons: React.FC<PropsType> = React.memo(({
     type,
     name,
     options,
@@ -41,7 +41,7 @@ export const RadioButtons: React.FC<PropsType> = ({
         : [];
 
     return <>{mappedOptions}</>;
-};
+});
 
 const RadioContainer = styled.label`
     // The container

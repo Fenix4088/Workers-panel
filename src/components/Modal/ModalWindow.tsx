@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components/macro";
 import { InputText } from "../common/InputText/InputText";
 import { RadioButtons } from "../common/RadioButtons/RadioButtons";
@@ -15,7 +15,7 @@ type ModalWindowPropsT = {
     type?: "add" | "update";
 };
 
-export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...restProps }) => {
+export const ModalWindow: React.FC<ModalWindowPropsT> = React.memo(({ type = "add", ...restProps }) => {
     const dispatch = useDispatch();
     const updatingWorker = useSelector<RootStateT, WorkersT>((state) => state.app.modalStatus.optionalData);
 
@@ -54,7 +54,16 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
         }
     });
 
-    const closeModalHandler = () => dispatch(changeModalStatus({ isVisible: false, optionalData: {} as WorkersT }));
+    const closeModalHandler = useCallback(
+        () =>
+            dispatch(
+                changeModalStatus({
+                    isVisible: false,
+                    optionalData: {} as WorkersT
+                })
+            ),
+        [dispatch]
+    );
 
     return (
         <ModalForm onSubmit={formik.handleSubmit} data-form={"modal"}>
@@ -119,7 +128,7 @@ export const ModalWindow: React.FC<ModalWindowPropsT> = ({ type = "add", ...rest
             <Button type={"submit"}>{type === "add" ? "Add" : "Update"}</Button>
         </ModalForm>
     );
-};
+});
 
 const ModalForm = styled.form`
     padding: 30px 20px;
@@ -146,6 +155,6 @@ const IconWrap = styled.div`
 `;
 
 const ModalTitle = styled.h3`
-    margin-bottom: 10px;
-    text-align: center;
+  margin-bottom: 10px;
+  text-align: center;
 `;

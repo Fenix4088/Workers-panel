@@ -57,6 +57,7 @@ export const Paginator = (props: PaginatorPropsT) => {
 };
 
 const PaginatorWrap = styled.div`
+    grid-area: paginator;
     & > button {
         margin-right: 5px;
 

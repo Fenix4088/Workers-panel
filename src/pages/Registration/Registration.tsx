@@ -4,7 +4,6 @@ import { Button } from "../../components/common/Button/Button";
 import styled from "styled-components";
 import { InputText } from "../../components/common/InputText/InputText";
 import { useDispatch, useSelector } from "react-redux";
-import { authApi } from "../../api/api";
 import { RootStateT } from "../../App/store/store";
 import { Redirect } from "react-router-dom";
 import { routes } from "../../App/routes/routes";
@@ -105,7 +104,6 @@ export const Registration = () => {
                             />
                         </MB>
 
-                        {/*{registrationError && <div>{registrationError}</div>}*/}
                         <Button type={"submit"}>Submit</Button>
                     </StyledForm>
                 </div>

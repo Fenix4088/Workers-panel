@@ -1,11 +1,10 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
-import {routes} from "../../App/routes/routes";
-import {WorkersTable} from "../../pages/WorkersTable/WorkersTable";
-import {Login} from "../../pages/Login/Login";
-import {Registration} from "../../pages/Registration/Registration";
-import {NotFound} from "../../pages/NotFound/NotFound";
-import Toast from 'light-toast';
+import { Route, Switch } from "react-router-dom";
+import { routes } from "../../App/routes/routes";
+import { WorkersTable } from "../../pages/WorkersTable/WorkersTable";
+import { Login } from "../../pages/Login/Login";
+import { Registration } from "../../pages/Registration/Registration";
+import { NotFound } from "../../pages/NotFound/NotFound";
 
 export const Main = () => {
     return (
@@ -17,5 +16,5 @@ export const Main = () => {
                 <Route render={() => <NotFound />} />
             </Switch>
         </main>
-    )
-}
+    );
+};

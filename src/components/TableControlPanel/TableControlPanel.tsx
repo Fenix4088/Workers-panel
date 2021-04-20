@@ -38,14 +38,18 @@ export const TableControlPanel = () => {
             dispatch(setPageData([1], workers.length));
         }
 
-        setCurrentPage(1)
+        setCurrentPage(1);
     };
 
     return (
         <TablePanelWrap>
-            <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
+            <AddUser>
+                <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
+            </AddUser>
             <Search />
-            <Select options={["5", "10", "25", "all"]} value={selectedVal} onChangeOption={onSelectChange} />
+            <SelectWrap>
+                <Select options={["5", "10", "25", "all"]} value={selectedVal} onChangeOption={onSelectChange} />
+            </SelectWrap>
             <Paginator currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </TablePanelWrap>
     );
@@ -53,11 +57,42 @@ export const TableControlPanel = () => {
 
 const TablePanelWrap = styled.div`
     margin-bottom: 20px;
-    display: flex;
+    display: grid;
     align-items: center;
+    grid-template-rows: 1fr;
+    grid-template-columns: 5% 20% 30% 45%;
+    grid-template-areas: "addUser search select paginator";
 
     & > * {
         margin-right: 20px;
     }
+
+    @media (max-width: 768px) {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 25% 25%;
+        grid-template-areas:
+            "addUser addUser search  search"
+            "select select  paginator paginator";
+    }
+
+    @media (max-width: 600px) {
+        justify-items: stretch;
+        //align-items: center;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        grid-template-columns: 100%;
+        grid-template-areas:
+            "addUser"
+            "search"
+            "select"
+            "paginator";
+    }
 `;
 
+const AddUser = styled.span`
+    grid-area: addUser;
+`;
+
+const SelectWrap = styled.span`
+    grid-area: select;
+
+`;

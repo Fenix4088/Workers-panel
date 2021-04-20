@@ -35,6 +35,8 @@ export const Search = () => {
 };
 
 const SearchWrap = styled.div`
+  grid-area: search;
+
     width: 20%;
     position: relative;
 `;

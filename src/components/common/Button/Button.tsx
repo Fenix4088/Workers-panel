@@ -6,9 +6,9 @@ type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
 
 type PropsType = DefaultButtonPropsType;
 
-export const Button: React.FC<PropsType> = ({ ...restProps }) => {
+export const Button: React.FC<PropsType> = React.memo(({ ...restProps }) => {
     return <StyledButton {...restProps} />;
-};
+});
 
 // Styles
 const StyledButton = styled.button<StyledComponentProps<any, ThemeType, any, any>>`

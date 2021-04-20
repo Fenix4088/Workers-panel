@@ -64,7 +64,7 @@ export function* loginWorker(action: ReturnType<typeof loginSA>) {
         yield call(toast, "success", `Nice to see you, ${res.data.data.email}`);
     } catch (err) {
         yield put(setIsLoggedIn(false));
-        yield call(toast, "fail", err.message);
+        yield call(toast, "fail", err.response.data.message);
     }
 }
 

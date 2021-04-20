@@ -120,7 +120,6 @@ const FormStyle = styled.form`
     flex-flow: column nowrap;
     background-color: ${({ theme }) => theme.color.secondary.light};
     box-shadow: ${({ theme }) => theme.shadow[3]};
-
 `;
 
 export const FormTitle = styled.h3`

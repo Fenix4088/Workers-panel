@@ -7,7 +7,7 @@ type LoaderPropsT = {
     color?: string
 }
 
-export function Loader(props: LoaderPropsT) {
+export const Loader = React.memo((props: LoaderPropsT) => {
     const {containerProps, indicatorEl} = useLoading({
         loading: true,
         indicator: <Circles />,
@@ -18,7 +18,7 @@ export function Loader(props: LoaderPropsT) {
             {indicatorEl}
         </LoaderWrapper>
     );
-}
+})
 
 const LoaderWrapper = styled.section<{width: number, color: string}>`
     width: ${props => props.width + "px"};

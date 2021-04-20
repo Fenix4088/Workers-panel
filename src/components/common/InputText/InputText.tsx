@@ -13,7 +13,7 @@ type SuperInputTextPropsType = DefaultInputPropsType & {
     error?: string;
 };
 
-export const InputText: React.FC<SuperInputTextPropsType> = ({
+export const InputText: React.FC<SuperInputTextPropsType> = React.memo(({
     type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
     onChange,
     onChangeText,
@@ -49,7 +49,7 @@ export const InputText: React.FC<SuperInputTextPropsType> = ({
             <StyledError>{error && <span>{error}</span>}</StyledError>
         </InputTextWrapper>
     );
-};
+});
 
 const InputTextWrapper = styled.div`
     position: relative;

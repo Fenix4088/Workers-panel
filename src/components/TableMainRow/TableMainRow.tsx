@@ -1,12 +1,10 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useCallback} from "react";
+import { useDispatch } from "react-redux";
 import { changeModalStatus } from "../../App/appReducer";
 import { deleteWorkersSA, WorkersT } from "../../pages/WorkersTable/workersTableReducer";
 import { formatDate } from "../../helpers/helpers";
 import { WorkersPanelIcon } from "../common/SvgIcons/WorkersIcon";
 import styled from "styled-components/macro";
-import { RootStateT } from "../../App/store/store";
-import { Loader } from "../common/Loader/Loader";
 import { TableDataLoader } from "../common/Loader/Loaders";
 
 type TableMainRowPropsT = {
@@ -14,20 +12,25 @@ type TableMainRowPropsT = {
     index: number;
 };
 
-export const TableMainRow: React.FC<TableMainRowPropsT> = ({ workerData, index, ...restProps }) => {
+export const TableMainRow: React.FC<TableMainRowPropsT> = React.memo(({ workerData, index, ...restProps }) => {
     const dispatch = useDispatch();
 
-    const updateWorker = () => {
-        dispatch(changeModalStatus({ isVisible: true, modalType: "update", optionalData: workerData }));
-    };
+    const updateWorker = () =>
+        dispatch(
+            changeModalStatus({
+                isVisible: true,
+                modalType: "update",
+                optionalData: workerData
+            })
+        );
 
-    const deleteWorker = () => {
+    const deleteWorker = useCallback(() => {
         workerData._id && dispatch(deleteWorkersSA(workerData._id));
-    };
+    }, [dispatch, workerData._id]);
 
     return (
         <TableBodyRow>
-            <TableData>{index}</TableData>
+            <TableData>{index + 1}</TableData>
             <TableData>{workerData.fullName}</TableData>
             <TableData>{workerData.gender}</TableData>
             <TableData>{workerData.contacts}</TableData>
@@ -46,9 +49,7 @@ export const TableMainRow: React.FC<TableMainRowPropsT> = ({ workerData, index, 
             </TableDataUsePanel>
         </TableBodyRow>
     );
-};
-
-
+});
 
 const TableBodyRow = styled.tr`
     transition: all 0.2s ease;
@@ -81,5 +82,3 @@ const TableDataUsePanel = styled.td`
         }
     }
 `;
-
-
