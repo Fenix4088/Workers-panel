@@ -7,7 +7,7 @@ import {setUserData} from "../../App/appReducer";
 
 type ActionsT = ReturnType<typeof setIsLoggedIn>;
 
-type InitialStateT = {
+export type InitialStateT = {
     isLoggedIn: boolean;
 };
 
@@ -22,7 +22,7 @@ const reducerActions = {
 };
 
 // * Reducer
-const initialState: InitialStateT = {
+ const initialState: InitialStateT = {
     isLoggedIn: false
 };
 
