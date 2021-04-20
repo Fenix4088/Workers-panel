@@ -5,16 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStateT } from "../../App/store/store";
 import styled from "styled-components/macro";
 import { getWorkersSA, WorkersT } from "./workersTableReducer";
-import { WorkersPanelIcon } from "../../components/common/SvgIcons/WorkersIcon";
 import { ModalWindow } from "../../components/Modal/ModalWindow";
 import { v1 } from "uuid";
-import { changeModalStatus, ModalStatusT } from "../../App/appReducer";
+import { ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
-import { Search } from "../../components/Search/Search";
 import { TableLoader } from "../../components/common/Loader/Loaders";
+import { TableControlPanel } from "../../components/TableControlPanel/TableControlPanel";
 
 export const WorkersTable = () => {
     const dispatch = useDispatch();
+
     const modalStatus = useSelector<RootStateT, ModalStatusT>((state) => state.app.modalStatus);
 
     useEffect(() => {
@@ -29,24 +29,10 @@ export const WorkersTable = () => {
         return <Redirect to={routes.login} />;
     }
 
-    const addWorker = () =>
-        dispatch(
-            changeModalStatus({
-                isVisible: true,
-                modalType: "add",
-                optionalData: {} as WorkersT
-            })
-        );
-
     return (
         <MainTable>
             <TableTitle>Workers Table</TableTitle>
-
-            <TablePanelWrap>
-                <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
-                <Search />
-            </TablePanelWrap>
-
+            <TableControlPanel />
             <TableWrapper>
                 <Table>
                     <thead>
@@ -84,22 +70,13 @@ const TableWrapper = styled.div`
 `;
 
 const Table = styled.table`
-  width: 100%;
-  margin: 0 auto;
-  border-collapse: collapse;
-  box-shadow: ${({theme}) => theme.shadow[5]};
-  border: 1px solid rgba(146, 141, 141, 0.7);
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    box-shadow: ${({ theme }) => theme.shadow[5]};
+    border: 1px solid rgba(146, 141, 141, 0.7);
 `;
 
-const TablePanelWrap = styled.div`
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-
-    & > * {
-        margin-right: 20px;
-    }
-`;
 const TableTitle = styled.h1`
     margin-bottom: 20px;
     text-align: center;

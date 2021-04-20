@@ -1,12 +1,17 @@
 // * Types
-import { call, put, takeEvery } from "redux-saga/effects";
-import { AxiosResponse } from "axios";
-import { authApi, AuthRespT } from "../api/api";
-import { setIsLoggedIn } from "../pages/Login/loginReducer";
-import { WorkersT } from "../pages/WorkersTable/workersTableReducer";
-import { toast } from "../helpers/helpers";
+import {call, put, takeEvery} from "redux-saga/effects";
+import {AxiosResponse} from "axios";
+import {authApi, AuthRespT} from "../api/api";
+import {setIsLoggedIn} from "../pages/Login/loginReducer";
+import {WorkersT} from "../pages/WorkersTable/workersTableReducer";
+import {toast} from "../helpers/helpers";
 
-type ActionsT = ReturnType<typeof isAuth> | ReturnType<typeof changeModalStatus> | ReturnType<typeof appLoading> | ReturnType<typeof setUserData>;
+type ActionsT =
+    ReturnType<typeof isAuth>
+    | ReturnType<typeof changeModalStatus>
+    | ReturnType<typeof appLoading>
+    | ReturnType<typeof setUserData>
+    | ReturnType<typeof setTotalPadeCount>;
 
 export type ModalStatusT = {
     modalType?: "add" | "update";
@@ -19,11 +24,17 @@ export type AuthUserDataT = {
     id: string
 };
 
+export type PaginatorDataT = {
+    totalPageCount: Array<number>,
+    currentPage: number
+}
+
 export type InitialStateT = {
     isAuth: boolean;
     isAppLoading: boolean;
     modalStatus: ModalStatusT;
     authUserData: AuthUserDataT;
+    paginatorData: PaginatorDataT;
 };
 
 // * Actions
@@ -35,7 +46,8 @@ const reducerActions = {
     AUTH: "appReducer/AUTH" as const,
     MODAL_STATUS: "appReducer/MODAL_STATUS" as const,
     APP_LOADING: "appReducer/APP_LOADING" as const,
-    SET_USER_DATA: "appReducer/SET_USER_DATA" as const
+    SET_USER_DATA: "appReducer/SET_USER_DATA" as const,
+    SET_TOTAL_PAGE_COUNT: "appReducer/SET_TOTAL_PAGE_COUNT" as const,
 };
 
 // * Reducer
@@ -50,11 +62,15 @@ const initialState: InitialStateT = {
         modalType: "add",
         isVisible: false,
         optionalData: {} as WorkersT
+    },
+    paginatorData: {
+        totalPageCount: [0],
+        currentPage: 0
     }
 };
 
 export const appReducer = (state = initialState, action: ActionsT): InitialStateT => {
-    const { AUTH, MODAL_STATUS, APP_LOADING, SET_USER_DATA } = reducerActions;
+    const {AUTH, MODAL_STATUS, APP_LOADING, SET_USER_DATA, SET_TOTAL_PAGE_COUNT} = reducerActions;
 
     switch (action.type) {
         case AUTH: {
@@ -64,10 +80,10 @@ export const appReducer = (state = initialState, action: ActionsT): InitialState
             };
         }
         case MODAL_STATUS: {
-            const { isVisible, modalType, optionalData } = action.modalStatus;
+            const {isVisible, modalType, optionalData} = action.modalStatus;
             return {
                 ...state,
-                modalStatus: { ...state.modalStatus, isVisible, modalType, optionalData: optionalData }
+                modalStatus: {...state.modalStatus, isVisible, modalType, optionalData: optionalData}
             };
         }
         case APP_LOADING: {
@@ -80,6 +96,12 @@ export const appReducer = (state = initialState, action: ActionsT): InitialState
             return {
                 ...state,
                 authUserData: {...state.authUserData, email: action.userData.email, id: action.userData.id}
+            };
+        }
+        case SET_TOTAL_PAGE_COUNT: {
+            return {
+                ...state,
+                paginatorData: {...state.paginatorData, totalPageCount: action.pages}
             };
         }
         default:
@@ -116,6 +138,14 @@ export const setUserData = (userData: AuthUserDataT) => {
     } as const;
 };
 
+export const setTotalPadeCount = (pages: Array<number>) => {
+    return {
+        type: reducerActions.SET_TOTAL_PAGE_COUNT,
+        pages
+    } as const;
+};
+
+
 // * Sagas
 export function* appWatcher() {
     yield takeEvery(sagasAppActions.AUTH, authWorker);
@@ -138,4 +168,4 @@ export function* authWorker() {
     }
 }
 
-export const authSA = () => ({ type: sagasAppActions.AUTH });
+export const authSA = () => ({type: sagasAppActions.AUTH});
