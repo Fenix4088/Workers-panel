@@ -6,7 +6,6 @@ import { RootStateT } from "../../App/store/store";
 import styled from "styled-components/macro";
 import { getWorkersSA, WorkersT } from "./workersTableReducer";
 import { ModalWindow } from "../../components/Modal/ModalWindow";
-import { v1 } from "uuid";
 import { ModalStatusT } from "../../App/appReducer";
 import { TableMainRow } from "../../components/TableMainRow/TableMainRow";
 import { TableLoader } from "../../components/common/Loader/Loaders";

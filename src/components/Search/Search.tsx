@@ -14,7 +14,6 @@ export const Search = () => {
     const searchWorkers = (e: FormEvent<HTMLInputElement>) => {
         const { value } = e.currentTarget;
         setSearchVal(value);
-
         if (!value.trim()) {
             dispatch(getWorkersSA());
         } else {
