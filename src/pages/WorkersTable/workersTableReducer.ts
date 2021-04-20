@@ -83,7 +83,7 @@ export const workersTableReducer = (state = initialState, action: ActionsT): Ini
         case ADD_WORKER: {
             return {
                 ...state,
-                workers: [...state.workers, { ...action.workerData, isLoading: false }]
+                workers: [...state.workers, { ...action.workerData, isLoading: false, _id: action._id }]
             };
         }
         case DELETE_WORKER: {
@@ -145,7 +145,7 @@ export const setWorkers = (payload: Array<WorkersT>) => {
 export const addWorker = (workerData: NewWorkerT) => {
     return {
         type: reducerActions.ADD_WORKER,
-        id: v1(),
+        _id: v1(),
         workerData
     } as const;
 };

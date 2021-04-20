@@ -53,7 +53,7 @@ export const WorkersTable = () => {
                             <TableLoader />
                         ) : (
                             currentWorkers.map((w, i) => {
-                                return <TableMainRow workerData={w} index={i} key={w._id ? w._id : v1()} />;
+                                return <TableMainRow workerData={w} index={i} key={w._id} />;
                             })
                         )}
                     </tbody>
