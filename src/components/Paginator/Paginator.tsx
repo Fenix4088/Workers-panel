@@ -7,15 +7,19 @@ import { Button } from "../common/Button/Button";
 import { v1 } from "uuid";
 import styled from "styled-components/macro";
 
-export const Paginator = () => {
+type PaginatorPropsT = {
+    currentPage: number;
+    setCurrentPage: (param: number) => void;
+}
+
+export const Paginator = (props: PaginatorPropsT) => {
     const dispatch = useDispatch();
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    // const [currentPage, setCurrentPage] = useState<number>(1);
     const pagesList = useSelector<RootStateT, Array<number>>((state) => state.app.paginatorData.totalPageCount);
     const usersPerPage = useSelector<RootStateT, number>((state) => state.app.paginatorData.usersPerPage);
 
     const onPagButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        // debugger;
-        setCurrentPage(+e.currentTarget.value);
+        props.setCurrentPage(+e.currentTarget.value);
 
         const currentPage = +e.currentTarget.value;
 
@@ -29,14 +33,14 @@ export const Paginator = () => {
 
     return (
         <PaginatorWrap>
-            {calcPagination(pagesList, currentPage).map((p) => {
+            {calcPagination(pagesList, props.currentPage).map((p) => {
                 if (p !== "...") {
                     return (
                         <Button
                             key={v1()}
                             onClick={onPagButtonClick}
                             value={p}
-                            style={{ backgroundColor: p === currentPage ? "#dbb145" : "" }}
+                            style={{ backgroundColor: p === props.currentPage ? "#dbb145" : "" }}
                         >
                             {p}
                         </Button>

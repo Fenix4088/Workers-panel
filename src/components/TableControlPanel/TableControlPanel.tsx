@@ -14,6 +14,7 @@ type SelectValT = "5" | "10" | "25" | "all";
 
 export const TableControlPanel = () => {
     const dispatch = useDispatch();
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [selectedVal, setSelectedVal] = useState<SelectValT>("all");
     const workers = useSelector<RootStateT, Array<WorkersT>>((state) => state.workers.workers);
 
@@ -36,6 +37,8 @@ export const TableControlPanel = () => {
             dispatch(setCurrentUsersIndexes([0]));
             dispatch(setPageData([1], workers.length));
         }
+
+        setCurrentPage(1)
     };
 
     return (
@@ -43,7 +46,7 @@ export const TableControlPanel = () => {
             <WorkersPanelIcon icon={"add"} width={"30"} onClick={addWorker} />
             <Search />
             <Select options={["5", "10", "25", "all"]} value={selectedVal} onChangeOption={onSelectChange} />
-            <Paginator />
+            <Paginator currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </TablePanelWrap>
     );
 };
