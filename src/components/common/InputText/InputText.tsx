@@ -13,43 +13,45 @@ type SuperInputTextPropsType = DefaultInputPropsType & {
     error?: string;
 };
 
-export const InputText: React.FC<SuperInputTextPropsType> = React.memo(({
-    type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
-    onChange,
-    onChangeText,
-    onKeyPress,
-    onEnter,
-    error,
+export const InputText: React.FC<SuperInputTextPropsType> = React.memo(
+    ({
+        type, // достаём и игнорируем чтоб нельзя было задать другой тип инпута
+        onChange,
+        onChangeText,
+        onKeyPress,
+        onEnter,
+        error,
 
-    ...restProps // все остальные пропсы попадут в объект restProps
-}) => {
-    const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange && // если есть пропс onChange
-            onChange(e); // то передать ему е (поскольку onChange не обязателен)
+        ...restProps // все остальные пропсы попадут в объект restProps
+    }) => {
+        const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
+            onChange && // если есть пропс onChange
+                onChange(e); // то передать ему е (поскольку onChange не обязателен)
 
-        onChangeText && onChangeText(e.currentTarget.value);
-    };
+            onChangeText && onChangeText(e.currentTarget.value);
+        };
 
-    const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
-        onKeyPress && onKeyPress(e);
+        const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
+            onKeyPress && onKeyPress(e);
 
-        e.key === "Enter" && // если нажата кнопка Enter
-            onEnter && // и есть пропс onEnter
-            onEnter(); // то вызвать его
-    };
+            e.key === "Enter" && // если нажата кнопка Enter
+                onEnter && // и есть пропс onEnter
+                onEnter(); // то вызвать его
+        };
 
-    return (
-        <InputTextWrapper>
-            <StyledInput
-                type={type}
-                onChange={onChangeCallback}
-                onKeyPress={onKeyPressCallback}
-                {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
-            />
-            <StyledError>{error && <span>{error}</span>}</StyledError>
-        </InputTextWrapper>
-    );
-});
+        return (
+            <InputTextWrapper>
+                <StyledInput
+                    type={type}
+                    onChange={onChangeCallback}
+                    onKeyPress={onKeyPressCallback}
+                    {...restProps} // отдаём инпуту остальные пропсы если они есть (value например там внутри)
+                />
+                <StyledError>{error && <span>{error}</span>}</StyledError>
+            </InputTextWrapper>
+        );
+    }
+);
 
 const InputTextWrapper = styled.div`
     position: relative;
@@ -66,12 +68,14 @@ const StyledInput = styled.input<StyledComponentProps<any, any, any, any>>`
 
     font-size: ${({ theme }) => theme.font.size.default};
     font-family: ${({ theme }) => theme.font.family.default};
-  box-shadow: ${({ theme }) => theme.shadow[3]};
+    box-shadow: ${({ theme }) => theme.shadow[3]};
     border: 1px solid rgb(109, 109, 109);
 `;
 // Стили контейнера с ошибкой
 const StyledError = styled.div`
     position: absolute;
+    top: 34px;
+    left: 25%;
     bottom: 1px;
 
     // Стили текста ошибки

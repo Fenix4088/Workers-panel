@@ -10,6 +10,7 @@ import { routes } from "../../App/routes/routes";
 import { registrationSA } from "./registrationReducer";
 import { MB } from "../../styles/GlobalStyles";
 import { FormTitle } from "../Login/Login";
+import { Loader } from "../../components/common/Loader/Loader";
 
 export type RegistrationFormT = {
     email: string;
@@ -20,6 +21,7 @@ export type RegistrationFormT = {
 export const Registration = () => {
     const dispatch = useDispatch();
     const isRegistered = useSelector<RootStateT, boolean>((state) => state.registration.isRegistered);
+    const isPending = useSelector<RootStateT, boolean>((state) => state.registration.isPending);
 
     const validate = (values: RegistrationFormT) => {
         const errors: RegistrationFormT = {} as RegistrationFormT;
@@ -67,6 +69,13 @@ export const Registration = () => {
             <>
                 <div>
                     <StyledForm onSubmit={formik.handleSubmit}>
+                        {isPending && (
+                            <Overlay>
+                                <span>
+                                    <Loader size={50} />
+                                </span>
+                            </Overlay>
+                        )}
                         <FormTitle>Sing up</FormTitle>
 
                         <MB margin={"20px"}>

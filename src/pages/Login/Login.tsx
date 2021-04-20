@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { InputText } from "../../components/common/InputText/InputText";
 import { NavLink, Redirect } from "react-router-dom";
 import { Button } from "../../components/common/Button/Button";
@@ -10,6 +10,8 @@ import { routes } from "../../App/routes/routes";
 import { loginSA } from "./loginReducer";
 import { RootStateT } from "../../App/store/store";
 import { MB } from "../../styles/GlobalStyles";
+import { Loader } from "../../components/common/Loader/Loader";
+import {isRegistered} from "../Registration/registrationReducer";
 
 export type LoginFormT = {
     email: string;
@@ -20,6 +22,9 @@ export type LoginFormT = {
 export const Login = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector<RootStateT, boolean>((state) => state.login.isLoggedIn);
+    const isPending = useSelector<RootStateT, boolean>((state) => state.login.isPending);
+
+    useEffect(() => {dispatch(isRegistered(false))}, [dispatch])
 
     const validate = (values: LoginFormT) => {
         const errors: LoginFormT = {} as LoginFormT;
@@ -64,11 +69,13 @@ export const Login = () => {
         <>
             <div>
                 <FormStyle onSubmit={formik.handleSubmit}>
-                    {/*{isFormPending && (*/}
-                    {/*    <Overlay>*/}
-                    {/*        <span>Loading...</span>*/}
-                    {/*    </Overlay>*/}
-                    {/*)}*/}
+                    {isPending && (
+                        <Overlay>
+                            <span>
+                                <Loader size={50} />
+                            </span>
+                        </Overlay>
+                    )}
                     <FormTitle>Login</FormTitle>
 
                     <MB margin={"20px"}>
@@ -126,7 +133,7 @@ export const FormTitle = styled.h3`
     margin-bottom: 20px;
 `;
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
     position: absolute;
     top: 0;
     left: 0;
